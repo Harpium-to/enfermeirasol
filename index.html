@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enfermeira Sol 1012 — De plantão pelo Tocantins</title>
+<meta name="description" content="Antes de candidata, enfermeira. A trajetória da Enfermeira Sol e as 22 propostas do mandato para o Tocantins.">
+<meta name="theme-color" content="#F7FBF6">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Enfermeira Sol 1012 — De plantão pelo Tocantins">
+<meta property="og:description" content="Antes de candidata, enfermeira. Conheça a história e as 22 propostas do mandato.">
+<meta property="og:image" content="assets/hero-capa.jpg">
+<link rel="icon" href="assets/girassol.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- As três famílias num pedido só: Fraunces (títulos), Figtree (corpo) e
+     Titillium Web (só os números da faixa escura). -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,900&family=Figtree:wght@400;500;600;700;800&family=Titillium+Web:wght@600;700;900&display=swap" rel="stylesheet">
+
+<!-- ==========================================================================
+     CONFIGURAÇÃO — é o único bloco que precisa de manutenção.
+     Os campos marcados com <<< FALTA precisam chegar da campanha. Enquanto
+     estiverem vazios, o bloco correspondente some sozinho da página (nada
+     de botão que não leva a lugar nenhum).
+     ========================================================================== -->
+<script>
+const CAMPANHA = {
+  nome:         'ENFERMEIRA SOL',
+  primeiroNome: 'Sol',
+  tratamento:   'Enfermeira',
+  cargo:        'Deputada Federal',
+  numero:       '1012',
+  lema:         'De plantão pelo Tocantins.',
+  desde:        'Desde 2001 cuidando do povo Tocantinense.',
+  partido:      'REPUBLICANOS',
+  cnpj:         '68.526.922/0001-70',
+
+  /* Links. Vazio = o botão/linha correspondente não aparece. */
+  links:{
+    instagram: '',                       // <<< FALTA: https://instagram.com/…
+    whatsapp:  '',                       // <<< FALTA: só dígitos, com DDI (55…)
+    email:     '',                       // <<< FALTA: e-mail da campanha
+    plano:     '',                       // <<< FALTA: PDF do plano completo
+    grupo:     '',                       // <<< FALTA: link do grupo da campanha
+    gerador:   'https://enfermeira-sol.vercel.app'   // o site da foto de perfil
+  },
+  zapTexto: 'Oi! Quero falar com a campanha da Enfermeira Sol 1012.',
+
+  /* Fotos das seções. Vazio = aparece a moldura pontilhada de "foto em breve"
+     no lugar; preenchido = vira a imagem.
+
+     O caminho é o do arquivo de RESERVA (.png ou .jpg). O site monta sozinho
+     um <picture> apontando pro irmão .webp — todo arquivo de foto em assets/
+     tem um. Se puser aqui um arquivo sem o irmão .webp, gere o par junto. */
+  fotos:{
+    quem:   'assets/sol-quem.png',      // ela de braços cruzados, sobre o cartão
+    resumo: 'assets/sol-resumo.png'     // ela de mãos dadas, recorte
+  },
+
+  get legalTopo(){ return `PROPAGANDA ELEITORAL · CNPJ: ${this.cnpj}`; },
+  get legenda(){   return `${this.partido} / CNPJ – ${this.cnpj}`; }
+};
+
+/* Os cinco eixos. `cor` é o sotaque de cada um — todos dentro da paleta dela.
+   Ver "a paleta" no CLAUDE.md antes de trocar qualquer um por azul-marinho. */
+const EIXOS = [
+  { id:'saude',   n:'01', icone:'saude',
+    titulo:'Saúde de verdade',
+    sub:'Enfermagem, valorização da categoria e SUS',
+    intro:'Sou enfermeira antes de ser candidata. Sem profissional valorizado e saudável, não existe atendimento de qualidade pro povo.',
+    cor:'#009838' },
+  { id:'educacao', n:'02', icone:'educacao',
+    titulo:'Aprender sem limites',
+    sub:'Educação com foco em inclusão',
+    intro:'Educação e saúde caminham juntas — foi assim na minha trajetória, e é assim que penso o mandato.',
+    cor:'#00752B' },
+  { id:'animal',  n:'03', icone:'animal',
+    titulo:'Tocantins protetor',
+    sub:'Causa animal',
+    intro:'Sou uma das principais vozes do estado na defesa dos animais. Três pilares: bem-estar, controle populacional ético e Lei Sansão cumprida.',
+    cor:'#E0A800' },
+  { id:'infra',   n:'04', icone:'infra',
+    titulo:'Toca pra frente!',
+    sub:'Desenvolvimento e infraestrutura federal',
+    intro:'O dinheiro e as obras que já são do Tocantins por direito precisam de fato chegar até o estado.',
+    cor:'#6FA61E' },
+  { id:'trabalho', n:'05', icone:'trabalho',
+    titulo:'O trabalho devolve',
+    sub:'Empreendedorismo e desenvolvimento econômico',
+    intro:'Diversificar a economia tocantinense, trazendo Brasília pra financiar inovação, crédito e oportunidade — sobretudo pra quem teve menos acesso a isso.',
+    cor:'#007E4A' }
+];
+
+/* As 22 propostas, na ordem da copy. `compromisso` é o que ela assume;
+   `dado` é o motivo, com o número que sustenta. A separação não é enfeite:
+   é o que deixa a promessa auditável ao lado do fato que a justifica. */
+const PROPOSTAS = [
+  { n:'01', eixo:'saude', titulo:'O piso da enfermagem chegando ao bolso',
+    compromisso:'Vou cobrar que os bilhões já aprovados em Brasília cheguem de fato ao enfermeiro, técnico e auxiliar do Tocantins.',
+    dado:'Dos R$ 11 bilhões aprovados pra custear o piso, só R$ 8 bilhões estão chegando. O mandato fiscaliza e cobra o repasse do Fundo Nacional de Saúde.' },
+  { n:'02', eixo:'saude', titulo:'36 horas e reajuste automático (PEC 19/24)',
+    compromisso:'Vou entrar em Brasília já lutando pela aprovação da PEC que garante jornada de 36h semanais e correção anual do piso.',
+    dado:'O piso está congelado desde 2022 porque o reajuste automático foi vetado. A PEC já passou na Câmara e está no Senado.' },
+  { n:'03', eixo:'saude', titulo:'Lei do Descanso Digno saindo do papel',
+    compromisso:'Vou cobrar que a lei que garante lugar de descanso ao plantonista seja cumprida nos hospitais tocantinenses. Quem cuida também precisa descansar.',
+    dado:'Antes da lei, 49% das unidades públicas não tinham espaço de repouso adequado. A lei existe — falta cumprir.' },
+  { n:'04', eixo:'saude', titulo:'Tabela SUS reajustada',
+    compromisso:'Vou brigar pelo reajuste automático da tabela do SUS, pra que hospital do Tocantins não feche as contas no vermelho atendendo o povo.',
+    dado:'Mais de 1.500 procedimentos estão defasados desde 2013, alguns com defasagem acima de 17.000%.' },
+  { n:'05', eixo:'saude', titulo:'Saúde mental de quem cuida',
+    compromisso:'Vou cobrar que o hospital cuide da saúde mental de quem trabalha lá — e propor suporte psicológico e canal seguro de denúncia contra assédio em todo serviço de saúde.',
+    dado:'A enfermagem tem 8,8% de risco de suicídio na categoria. Burnout já é doença ocupacional reconhecida pela OMS.' },
+  { n:'06', eixo:'saude', titulo:'Atenção básica com qualidade, não só no mapa',
+    compromisso:'Não basta ter equipe de saúde da família em todo canto. Vou cobrar que o dinheiro federal garanta qualidade de atendimento.',
+    dado:'O Tocantins tem uma das maiores coberturas do país (até 96,6%), mas já registrou quase 30% de internações por causas evitáveis.' },
+
+  { n:'07', eixo:'educacao', titulo:'Hospital Escola da UFT concluído',
+    compromisso:'Vou seguir destinando emenda até o Hospital Escola virar hospital funcionando, com leitos de SUS e ala indígena, como já está planejado.',
+    dado:'Obra de R$ 240 milhões, pedra fundamental lançada em 2026, cerca de 250 leitos pelo SUS. Não pode parar no meio.' },
+  { n:'08', eixo:'educacao', titulo:'Mais residência multiprofissional no Tocantins',
+    compromisso:'Vou lutar por mais vagas de residência financiadas por Brasília aqui no estado, pra formar profissional de saúde qualificado sem precisar sair daqui.',
+    dado:'O MEC financia 4.330 bolsas no país; a fatia do Tocantins ainda é pequena diante da demanda.' },
+  { n:'09', eixo:'educacao', titulo:'Sala de recursos em toda escola que precisa',
+    compromisso:'Vou cobrar e destinar emenda pra que toda escola do Tocantins tenha sala de recursos equipada — coisa concreta pra criança com deficiência ou autismo aprender de verdade.',
+    dado:'O estado tem 13.090 estudantes com deficiência, TEA ou altas habilidades. Matrículas com autismo cresceram 44,4% em um ano no país.' },
+  { n:'10', eixo:'educacao', titulo:'Centro de apoio multidisciplinar',
+    compromisso:'Vou destinar emenda pra ajudar a criar um centro que reúna, num só lugar, o suporte que hoje a família corre atrás espalhado pela cidade.',
+    dado:'Fono, terapia ocupacional e psicopedagogia num centro de referência ligado à rede de atendimento especializado.' },
+
+  { n:'11', eixo:'animal', titulo:'SUS Animal (SUSA)',
+    compromisso:'Vou entrar em Brasília defendendo a aprovação do SUS Animal — atendimento público de saúde pra cachorro e gato de baixa renda, igual o SUS que a gente tem pra gente.',
+    dado:'O PL 3308/2021 já tramita na Câmara com parecer favorável em comissão.' },
+  { n:'12', eixo:'animal', titulo:'Farmácia Veterinária Popular',
+    compromisso:'Vou lutar pela farmácia popular do bichinho — remédio veterinário mais barato pra quem não pode pagar preço de clínica particular.',
+    dado:'Prevista no mesmo PL 3308/2021. O DF já criou a sua por lei em 2026.' },
+  { n:'13', eixo:'animal', titulo:'Hospital Veterinário público',
+    compromisso:'Vou destinar emenda pra ajudar a construir um hospital veterinário público no Tocantins, pra quem tem bicho não ficar refém de clínica cara.',
+    dado:'Já tramitam projetos criando hospitais veterinários públicos federais, estaduais e municipais.' },
+  { n:'14', eixo:'animal', titulo:'Castração, vacinação e Lei Sansão pra valer',
+    compromisso:'Vou trazer recurso federal pra castração e vacinação de cães e gatos, apoiar a nova lei nacional de proteção animal e cobrar que quem maltrata pague de verdade.',
+    dado:'O governo mantém ação orçamentária que financia castração via emenda. A Lei Sansão existe — falta fiscalização.' },
+
+  { n:'15', eixo:'infra', titulo:'Ferrovia Norte-Sul fiscalizada de perto',
+    compromisso:'Vou cobrar transparência nas obras da ferrovia — dinheiro público não pode sumir numa obra que o produtor tocantinense espera há décadas.',
+    dado:'O TCU julga em 2026 dois processos sobre indícios de superfaturamento nos contratos do trecho tocantinense.' },
+  { n:'16', eixo:'infra', titulo:'Duplicação da BR-153 sem parar de novo',
+    compromisso:'Vou brigar pra que a duplicação da BR-153 não pare — essa estrada é a espinha dorsal de quem produz e viaja no nosso estado.',
+    dado:'A obra avançou em 2025 e 2026, mas tem histórico de paralisações prolongadas.' },
+  { n:'17', eixo:'infra', titulo:'Esgoto pro interior',
+    compromisso:'Vou trazer recurso federal pra levar rede de esgoto aos municípios do interior que hoje não têm nada. Saneamento não pode ser privilégio de capital.',
+    dado:'O Tocantins trata só 26,8% do esgoto; 119 dos 139 municípios não têm sistema público. Investimento estimado: R$ 464 milhões.' },
+  { n:'18', eixo:'infra', titulo:'Pontes federais seguras',
+    compromisso:'Vou cobrar e fiscalizar a segurança das pontes federais — muita gente do interior depende delas pra não ficar isolada na cheia.',
+    dado:'O TCU acompanha o estado de conservação de 122 pontes federais no estado.' },
+
+  { n:'19', eixo:'trabalho', titulo:'Distrito de Inovação em Palmas',
+    compromisso:'Vou destinar emenda pra viabilizar, com a Prefeitura de Palmas, um distrito de inovação na capital — e trazer os bancos públicos federais pra dentro, com crédito de verdade pra quem quer empreender.',
+    dado:'O Tocantins tem 0,6% do PIB nacional e economia concentrada em agro e serviços tradicionais.' },
+  { n:'20', eixo:'trabalho', titulo:'Incentivo fiscal pra tecnologia',
+    compromisso:'Vou brigar pra que empresas de tecnologia que se instalarem no Tocantins tenham o mesmo incentivo fiscal que hoje só favorece o agro.',
+    dado:'O estado integra a Amazônia Legal e tem direito a até 75% de redução do IRPJ — benefício que hoje quase não alcança inovação.' },
+  { n:'21', eixo:'trabalho', titulo:'Crédito que chega ao pequeno negócio',
+    compromisso:'Vou acompanhar de perto se o crédito federal está de fato chegando ao empreendedor tocantinense, e propor melhorias na linha.',
+    dado:'O estado tem quase 85 mil MEIs ativos, alta de 99,5% em seis anos, mas a mortalidade de negócios segue alta.' },
+  { n:'22', eixo:'trabalho', titulo:'Crédito com juro justo pra mulher empreendedora',
+    compromisso:'Vou ampliar, por lei federal, o crédito com juro justo pra mulher empreendedora tocantinense.',
+    dado:'Mulheres recebem só 29,4% do crédito do país e pagam juro maior. No Tocantins, já são 62 mil à frente de negócios.' }
+];
+
+/* As quatro credenciais que a copy destaca. Cada linha sai da narrativa —
+   nada aqui foi inventado. Se for acrescentar, tem que vir da campanha. */
+const MARCOS = [
+  { icone:'medalha', titulo:'Prêmio Anna Nery', foto:'assets/marco-anna.jpg',
+    texto:'A maior condecoração da enfermagem brasileira, recebida do COFEN.' },
+  { icone:'punho',   titulo:'Movimento Basta', foto:'assets/marco-basta.jpg',
+    texto:'Liderança do movimento que garantiu o reajuste da insalubridade a todos os servidores do Tocantins.' },
+  { icone:'maos',    titulo:'Madrinha do Piso', foto:'assets/marco-piso.jpg',
+    texto:'Madrinha estadual do Piso Salarial da Enfermagem, ao lado do COFEN, do COREN e dos sindicatos.' },
+  { icone:'pata',    titulo:'Defesa Animal', foto:'assets/marco-animal.jpg',
+    texto:'Membro do Comitê Estadual de Proteção e Defesa dos Animais e uma das principais vozes do estado na causa.' }
+];
+</script>
+
+<style>
+/* ==========================================================================
+   IDENTIDADE — a mesma da campanha: verde lidera, amarelo destaca, marinho
+   só em texto. Fraunces nos títulos, Figtree no corpo.
+   Este site é IRMÃO do gerador de foto (enfermeira-sol.vercel.app) e deve
+   parecer da mesma campanha. O que ele NÃO pode parecer é o site da
+   candidata concorrente — ver CLAUDE.md antes de mexer em cor ou tipografia.
+   ========================================================================== */
+:root{
+  --creme:    #F7FBF6;
+  --creme-2:  #EDF5EB;
+  --papel:    #FFFFFF;
+  --tinta:    #002858;
+  --tinta-2:  #3D5A7A;
+  --tinta-3:  #7B92A8;
+  --principal:#009838;
+  --escura:   #00752B;
+  --destaque: #F8C000;
+  --linha:    #DCE9D8;
+  /* O campo verde das propostas. É o terceiro andar da página: creme em cima,
+     verde no meio, amarelo no fim, creme de novo no rodapé. Ver "os quatro
+     campos" no CLAUDE.md. */
+  --campo:    #E2F0DE;
+  /* O campo do fechamento — o amarelo-ouro que a campanha confirmou em
+     21/08/2026. Fica NUM lugar só do site. */
+  --ouro:     #FFC516;
+
+  --r-g: 24px;
+  --r-m: 15px;
+  --r-p: 9px;
+
+  --sombra:   0 16px 40px -26px rgba(0,40,88,.42);
+  --sombra-f: 0 26px 60px -28px rgba(0,40,88,.5);
+
+  --faixa: 1140px;
+  --topo-h: 66px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:calc(var(--topo-h) + 16px); }
+body{
+  margin:0; background:var(--creme); color:var(--tinta);
+  font-family:'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{ max-width:100%; }
+h1,h2,h3{ font-family:'Fraunces',Georgia,serif; font-weight:700; line-height:1.08; letter-spacing:-.022em; margin:0; }
+
+.faixa{ width:100%; max-width:var(--faixa); margin-inline:auto; padding-inline:20px; }
+@media (min-width:680px){ .faixa{ padding-inline:30px; } }
+
+.chapeu{
+  font-size:11px; font-weight:800; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--principal); margin:0;
+}
+.chapeu.clara{ color:var(--escura); }
+
+/* ==========================================================================
+   BARRA LEGAL + NAVEGAÇÃO FIXA
+   A faixa legal rola junto (é conteúdo obrigatório, não navegação); só a
+   barra de menu fica presa no topo.
+   ========================================================================== */
+.legal{
+  background:var(--destaque); color:var(--tinta);
+  text-align:center; padding:10px 16px;
+  font-size:11px; letter-spacing:.16em; text-transform:uppercase; font-weight:800;
+  position:relative; z-index:60;
+}
+@media (max-width:480px){ .legal{ font-size:9.5px; letter-spacing:.1em; padding:8px 12px; } }
+
+.topo{
+  position:sticky; top:0; z-index:50;
+  height:var(--topo-h);
+  background:rgba(247,251,246,.82);
+  -webkit-backdrop-filter:saturate(160%) blur(14px);
+          backdrop-filter:saturate(160%) blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s ease, box-shadow .3s ease, background .3s ease;
+}
+/* A borda só aparece quando a página já rolou: no topo ela é um risco solto. */
+.rolou .topo{ border-bottom-color:var(--linha); box-shadow:0 10px 30px -24px rgba(0,40,88,.5); }
+.topo-in{
+  height:100%; display:flex; align-items:center; gap:18px;
+  max-width:var(--faixa); margin-inline:auto; padding-inline:20px;
+}
+.topo-marca{ display:flex; align-items:center; flex:0 0 auto; }
+/* A logo nova é bem mais deitada que a antiga (711×128 contra 576×135), então
+   a mesma altura dava uma marca 30% mais larga e espremia o menu. */
+.topo-marca img{ height:28px; width:auto; display:block; }
+.topo-marca .provisoria{
+  font-family:'Fraunces',serif; font-weight:900; font-size:18px; color:var(--principal);
+}
+.topo-marca .provisoria span{ color:var(--destaque); }
+
+.topo nav{ margin-left:auto; display:flex; align-items:center; gap:4px; }
+.topo nav a{
+  position:relative; text-decoration:none; color:var(--tinta);
+  font-size:13.5px; font-weight:600; padding:9px 12px; border-radius:999px;
+  transition:color .18s ease, background .18s ease;
+  white-space:nowrap;
+}
+.topo nav a::after{
+  content:''; position:absolute; left:12px; right:12px; bottom:4px; height:2px;
+  border-radius:2px; background:var(--principal);
+  transform:scaleX(0); transform-origin:left; transition:transform .28s cubic-bezier(.16,1,.3,1);
+}
+.topo nav a:hover{ color:var(--escura); }
+.topo nav a:hover::after,
+.topo nav a.aqui::after{ transform:scaleX(1); }
+.topo nav a.aqui{ color:var(--escura); }
+
+.topo .btn{ margin-left:10px; padding:10px 18px; font-size:13px; }
+.topo .btn[hidden]{ display:none; }
+
+/* Botão do menu no celular */
+.hamburguer{
+  margin-left:auto; width:42px; height:42px; display:none; place-items:center;
+  border:1px solid var(--linha); border-radius:12px; background:var(--papel);
+  cursor:pointer; color:var(--tinta);
+}
+.hamburguer svg{ width:20px; height:20px; }
+@media (max-width:900px){
+  .hamburguer{ display:grid; }
+  .topo nav{
+    position:fixed; inset:calc(var(--topo-h) + var(--legal,38px)) 0 auto 0;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--papel); border-bottom:1px solid var(--linha);
+    padding:10px 16px 16px; box-shadow:var(--sombra-f);
+    transform:translateY(-14px); opacity:0; pointer-events:none;
+    transition:transform .3s cubic-bezier(.16,1,.3,1), opacity .25s ease;
+  }
+  .menu-aberto .topo nav{ transform:none; opacity:1; pointer-events:auto; }
+  .topo nav a{ padding:13px 8px; font-size:15.5px; border-radius:10px; }
+  .topo nav a::after{ display:none; }
+  .topo nav a.aqui{ background:var(--creme-2); }
+  .topo .btn{ margin:8px 0 0; width:100%; }
+}
+
+/* Barra de leitura — mostra o quanto da página já foi percorrido. */
+.progresso{
+  position:fixed; left:0; top:0; z-index:70; height:3px; width:100%;
+  transform:scaleX(var(--lido,0)); transform-origin:left;
+  background:linear-gradient(90deg,var(--principal),var(--destaque));
+  pointer-events:none;
+}
+
+/* ==========================================================================
+   BOTÕES
+   ========================================================================== */
+.btn{
+  appearance:none; border:0; cursor:pointer; font-family:inherit;
+  font-size:14.5px; font-weight:700; letter-spacing:.01em;
+  padding:14px 24px; border-radius:999px;
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  text-decoration:none; white-space:nowrap;
+  transition:transform .16s ease, box-shadow .16s ease,
+             background-color .16s ease, color .16s ease, border-color .16s ease;
+}
+.btn:active{ transform:translateY(1px); }
+.btn svg{ width:17px; height:17px; flex:0 0 auto; }
+.btn-principal{ background:var(--principal); color:#fff; box-shadow:var(--sombra); }
+.btn-principal:hover{ background-color:var(--escura); transform:translateY(-2px); box-shadow:var(--sombra-f); }
+.btn-destaque{ background:var(--destaque); color:var(--tinta); box-shadow:var(--sombra); }
+.btn-destaque:hover{ transform:translateY(-2px); box-shadow:var(--sombra-f); filter:brightness(.96); }
+.btn-linha{ background:transparent; color:var(--tinta); border:1.5px solid var(--linha); }
+.btn-linha:hover{ border-color:var(--principal); color:var(--escura); }
+
+/* Botão que chama: SÓ o brilho que varre por dentro dele, mais a seta
+   balançando. O halo que pulsava ATRÁS saiu a pedido da campanha em
+   21/08/2026 — parecia uma luz vazando por trás do botão.
+   O brilho é um `background-image` deslizando, não um pseudo-elemento: por
+   isso não precisa de `overflow:hidden` e não escapa da borda arredondada.
+   NENHUM dos dois mexe no transform do botão — se mexesse, o :hover (que sobe
+   2px) morreria, porque animação sempre ganha de regra normal. */
+.btn-pulsa{
+  background-image:linear-gradient(100deg,
+    rgba(255,255,255,0) 34%, rgba(255,255,255,.38) 47%, rgba(255,255,255,0) 60%);
+  background-size:260% 100%; background-repeat:no-repeat;
+  animation:varre 5s ease-in-out infinite;
+}
+@keyframes varre{ 0%{ background-position:170% 0; } 58%,100%{ background-position:-70% 0; } }
+/* Os dois botões da capa varrem fora de fase: em sincronia parecem um
+   letreiro piscando. */
+.capa-botoes .btn-pulsa + .btn-pulsa{ animation-delay:1.6s; }
+.btn-pulsa svg{ animation:seta 2.4s ease-in-out infinite; }
+@keyframes seta{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(3px); } }
+
+/* ==========================================================================
+   CAPA
+   Fundo fixo (a arte que veio da campanha) + luzes que vagam + o girassol
+   girando atrás dela. Não é a capa travada do site do gerador: aqui a página
+   rola normal, porque isto é um texto longo, não um passo a passo.
+   ========================================================================== */
+/* A capa é o banner que a campanha desenhou (assets/hero-capa.*): ela, o arco
+   de fotos, o girassol e a paisagem já vêm dentro da arte. O site não desenha
+   mais nada por cima além do bloco de texto e dos dois botões. */
+.capa{
+  position:relative; overflow:hidden;
+  background:var(--creme);
+  padding:clamp(24px,5vh,54px) 0 clamp(30px,5vh,58px);
+}
+.luzes{
+  position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  opacity:0; transition:opacity 1.4s ease .15s;
+}
+.pronto .luzes{ opacity:1; }
+/* As quatro manchas de cor saíram: o fundo da capa agora é uma ARTE
+   fotográfica, e borrão colorido por cima dela parece defeito de renderização.
+   Sobrou a poeira de luz, que lê como brilho e não como tinta. */
+.luz{ display:none; }
+.luz.a{ width:52vw; height:52vw; max-width:520px; max-height:520px; left:-12%; top:4%;
+        background:radial-gradient(circle,rgba(0,152,56,.24),transparent 68%);
+        animation:deriva-a 17s ease-in-out infinite; }
+.luz.b{ width:56vw; height:56vw; max-width:600px; max-height:600px; right:-14%; top:-12%;
+        background:radial-gradient(circle,rgba(248,192,0,.36),transparent 68%);
+        animation:deriva-b 21s ease-in-out infinite; }
+.luz.c{ width:42vw; height:42vw; max-width:440px; max-height:440px; right:16%; bottom:-18%;
+        background:radial-gradient(circle,rgba(0,152,56,.18),transparent 70%);
+        animation:deriva-c 25s ease-in-out infinite; }
+@keyframes deriva-a{
+  0%,100%{ transform:translate3d(0,7%,0)    scale(.90); opacity:.5; }
+  50%    { transform:translate3d(8%,-9%,0)  scale(1.16); opacity:1; } }
+@keyframes deriva-b{
+  0%,100%{ transform:translate3d(0,9%,0)    scale(.94); opacity:.55; }
+  50%    { transform:translate3d(-9%,-7%,0) scale(1.10); opacity:1; } }
+@keyframes deriva-c{
+  0%,100%{ transform:translate3d(0,10%,0)    scale(.88); opacity:.45; }
+  50%    { transform:translate3d(-7%,-12%,0) scale(1.18); opacity:.95; } }
+
+/* Poeira de luz subindo — mesma família do site irmão, em menor quantidade:
+   aqui a capa é mais baixa e 12 pontos viravam chuvisco. */
+.poeira{
+  position:absolute; bottom:-6%; border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,rgba(255,236,178,.9) 45%,rgba(248,192,0,0) 72%);
+  opacity:0; will-change:transform,opacity;
+  animation:sobe var(--t,18s) linear var(--d,0s) infinite;
+}
+@keyframes sobe{
+  0%  { transform:translate3d(0,0,0) scale(.5);                      opacity:0;  }
+  12% {                                                              opacity:.85;}
+  55% { transform:translate3d(var(--dx,14px),-42svh,0) scale(1);      opacity:.7; }
+  100%{ transform:translate3d(calc(var(--dx,14px) * -1),-88svh,0) scale(.55); opacity:0; }
+}
+/* Girassol desfocado encostado no canto de baixo à esquerda. Decorativo puro.
+   ELE é o que gira agora (pedido da campanha em 21/08/2026). O girassol que
+   girava atrás da cabeça dela saiu junto com a foto solta: o banner novo já
+   traz um girassol desenhado dentro da arte, e dois giros na mesma tela
+   brigavam. */
+.sol-canto{
+  position:absolute; z-index:0; pointer-events:none;
+  left:-5%; bottom:-9%; width:min(44vw,340px); height:auto;
+  /* `multiply` sobre o campo verde-amarelo da arte devolvia um oliva que
+     sumia. Em `normal` o girassol aparece como girassol — que é o pedido:
+     ele é a única coisa que gira na página agora. */
+  opacity:0; filter:blur(2px) saturate(1.15);
+  transition:opacity 1.6s ease .35s;
+  animation:gira 52s linear infinite; will-change:transform;
+}
+.pronto .sol-canto{ opacity:.62; }
+@keyframes gira{ from{ transform:rotate(0deg); } to{ transform:rotate(-360deg); } }
+
+.capa .faixa{ position:relative; z-index:1; }
+.capa-texto{ display:flex; flex-direction:column; align-items:center; min-width:0; }
+
+/* O bloco de texto em arte. A largura sai da ALTURA da tela (svh × 1.048, a
+   proporção do PNG) pelo mesmo motivo de sempre: com height + max-width a
+   imagem sobraria letterboxada dentro de uma caixa larga. */
+.capa-titulo{ width:100%; line-height:0; }
+.capa-titulo img{
+  display:block; margin-inline:auto; height:auto;
+  width:min(100%, 330px, calc(34svh * 1.048));
+  filter:drop-shadow(0 14px 26px rgba(0,40,88,.14));
+}
+/* Cortina da esquerda pra direita quando a capa entra. O estado fechado mora
+   atrás de .anima — sem isso, um erro de script antes da hora deixaria a capa
+   sem título. */
+.capa-titulo{ transition:clip-path 1.1s cubic-bezier(.16,1,.3,1) .15s; }
+.anima .capa-titulo{ clip-path:inset(-14% 102% -14% -14%); }
+.pronto .capa-titulo{ clip-path:inset(-14% -14% -14% -14%); }
+
+/* O banner. No celular ele cai no fluxo, sangra de ponta a ponta e é cortado
+   numa faixa mais alta — no tamanho natural (proporção 1.97) ela sairia com
+   190px de altura numa tela de 375px, ou seja, invisível. */
+.capa-banner{ display:block; }
+.capa-banner img{
+  display:block; width:100vw; margin-left:calc(50% - 50vw);
+  height:min(46svh, 330px); object-fit:cover; object-position:70% center;
+  margin-top:clamp(20px,4vh,34px);
+}
+.capa h1{
+  font-size:clamp(38px,10.5vw,84px); margin:12px 0 6px;
+  font-weight:900; letter-spacing:-.035em;
+}
+.capa h1 em{ font-style:normal; color:var(--principal); }
+.capa .lema{
+  margin:8px 0 0; font-family:'Fraunces',serif; font-weight:600; font-style:italic;
+  font-size:clamp(18px,4.6vw,26px); color:var(--escura);
+}
+.capa .desde{
+  margin:10px 0 0; color:var(--tinta-2); font-size:clamp(15px,3.6vw,17.5px);
+  max-width:34ch;
+}
+/* No celular os dois botões quebram em duas linhas; sem o justify-content a
+   segunda linha encosta na esquerda enquanto a arte acima está centrada. */
+.capa-botoes{ display:flex; flex-wrap:wrap; justify-content:center; gap:11px; margin-top:26px; }
+
+/* Bloco do número no estilo da urna — quatro casas, uma a uma. */
+.urna{ display:flex; gap:7px; margin-top:24px; }
+.urna span{
+  width:clamp(42px,11vw,58px); height:clamp(54px,14vw,74px);
+  display:grid; place-items:center;
+  border-radius:10px; background:var(--tinta); color:#fff;
+  font-family:'Fraunces',serif; font-weight:900; letter-spacing:0;
+  font-size:clamp(26px,7vw,38px); line-height:1;
+  box-shadow:0 12px 26px -16px rgba(0,40,88,.85), 0 0 0 1px rgba(0,40,88,.1) inset;
+}
+.urna span:nth-child(4){ background:var(--destaque); color:var(--tinta); }
+/* Cada casa cai no lugar quando a capa entra */
+.anima .urna span{ opacity:0; transform:translateY(16px) scale(.86); }
+.urna span{
+  transition:opacity .5s ease, transform .6s cubic-bezier(.34,1.56,.64,1);
+  transition-delay:calc(var(--i,0) * 90ms + 560ms);
+}
+.pronto .urna span{ opacity:1; transform:none; }
+.urna-grande span{
+  width:clamp(56px,15vw,84px); height:clamp(72px,19vw,108px);
+  font-size:clamp(34px,10vw,56px); border-radius:14px;
+}
+
+
+@media (min-width:940px){
+  /* No desktop o banner vira FUNDO da seção e o texto se apoia no vão claro da
+     esquerda da arte. A altura da capa é a proporção do banner (1.967), com
+     teto: passando disso ele é cortado na vertical, e o corte tem que sobrar
+     do lado da paisagem (embaixo), nunca do arco de fotos (em cima) — daí o
+     `object-position` em 26%. */
+  .capa{
+    padding:0; display:grid; align-items:center;
+    height:clamp(440px, calc(100vw / 1.967), 700px);
+  }
+  .capa-banner{ position:absolute; inset:0; z-index:0; }
+  .capa-banner img{
+    width:100%; height:100%; margin:0;
+    object-fit:cover; object-position:center 26%;
+  }
+  .capa-texto{ align-items:flex-start; }
+  .capa-botoes{ justify-content:flex-start; }
+  .capa-titulo img{
+    margin-inline:0;
+    width:min(46%, 430px, calc(58svh * 1.048));
+  }
+  .sol-canto{ left:-4%; bottom:-11%; width:min(25vw,255px); }
+}
+
+/* ==========================================================================
+   FAIXA DE NÚMEROS — o resumo do que a página entrega, logo abaixo da capa.
+   ========================================================================== */
+.numeros{
+  position:relative; z-index:2;
+  background:var(--tinta); color:#fff;
+}
+.numeros-in{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:2px 0;
+  padding:22px 0;
+}
+.numeros .item{ text-align:center; padding:12px 10px; position:relative; }
+/* Ícone EM CIMA do número (pedido da campanha em 24/08/2026). A faixa fica
+   ~40px mais alta do que na versão em que ele ficava ao lado — é o preço, e
+   foi aceito. */
+.numeros .topo-item{ display:flex; flex-direction:column; align-items:center; gap:9px; }
+.numeros .simbolo{
+  flex:0 0 auto; width:34px; height:34px; border-radius:11px;
+  display:grid; place-items:center;
+  background:rgba(248,192,0,.16); color:var(--destaque);
+}
+.numeros .simbolo svg{ width:18px; height:18px; }
+.numeros .item + .item::before{
+  content:''; position:absolute; left:0; top:16%; bottom:16%; width:1px;
+  background:rgba(255,255,255,.16);
+}
+.numeros .item:nth-child(3)::before{ display:none; }
+/* Titillium Web, branco. É a única peça do site fora da dupla
+   Fraunces + Figtree — números de painel pedem uma sem-serifa técnica, e a
+   campanha pediu esta. Não espalhe Titillium pro resto da página. */
+.numeros b{
+  display:block; font-family:'Titillium Web','Figtree',sans-serif; font-weight:700;
+  font-size:clamp(30px,7.4vw,44px); line-height:1; color:#fff;
+  letter-spacing:.005em;
+}
+.numeros span{
+  display:block; margin-top:7px; font-size:11.5px; font-weight:700;
+  letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.74);
+}
+@media (min-width:760px){
+  .numeros-in{ grid-template-columns:repeat(4,1fr); }
+  .numeros .item:nth-child(3)::before{ display:block; }
+}
+
+/* ==========================================================================
+   SEÇÕES
+   ========================================================================== */
+section{ position:relative; }
+.bloco{ padding:clamp(54px,9vh,92px) 0; }
+/* A medida em `ch` mora no <h2>, não na div em volta. Na div ela resolveria
+   contra a fonte DA DIV (Figtree 16px, ch ≈ 9px): 22ch virava ~200px e os
+   títulos quebravam em três linhas com uma palavra órfã no meio. No <h2> ela
+   mede o que devia medir desde o começo — a fonte do próprio título. */
+.bloco-titulo h2{ max-width:22ch; }
+/* .bloco-titulo entra junto de propósito: a seção das propostas NÃO é um
+   `.bloco` (ela tem o trilho grudento dentro e um respiro próprio), e por
+   isso o título dela ficava no tamanho padrão do navegador — menor que todos
+   os outros. Amarrar a regra ao título, e não à seção, resolve de vez. */
+.bloco h2, .bloco-titulo h2{ font-size:clamp(28px,5.6vw,46px); margin:12px 0 0; }
+.bloco h2 em, .bloco-titulo h2 em{ font-style:normal; color:var(--principal); }
+.bloco .linha-fina, .bloco-titulo .linha-fina{
+  display:block;
+  width:56px; height:4px; border-radius:99px; margin:20px 0 0;
+  background:linear-gradient(90deg,var(--principal),var(--destaque));
+}
+/* Abertura de capítulo: título no meio, com o risquinho embaixo dele.
+   ⚠️ A largura aqui é em px, NÃO em `ch`. O `ch` da .bloco-titulo resolve
+   contra a fonte DELA (Figtree 16px, ch ≈ 9px), não contra a do <h2> que está
+   dentro (Fraunces 46px). Com `26ch` a caixa dava ~230px e "Antes de
+   candidata," quebrava no meio — três linhas em vez das duas pedidas. */
+.bloco-titulo.centro{ max-width:min(100%,660px); margin-inline:auto; text-align:center; }
+.bloco-titulo.centro .linha-fina{ margin-inline:auto; }
+
+/* --- Vaga de foto -------------------------------------------------------
+   O lugar reservado pra imagem que a campanha ainda vai mandar. Preencher é
+   só apontar o caminho na configuração: a moldura pontilhada some e a foto
+   entra no mesmo lugar, no mesmo tamanho. O espaço já fica ocupado agora
+   porque é assim que dá pra julgar o layout antes das fotos chegarem.
+   ------------------------------------------------------------------------ */
+.vaga{
+  position:relative; display:grid; place-items:center; align-content:center; gap:9px;
+  border-radius:var(--r-m); padding:20px 16px; text-align:center;
+  border:2px dashed color-mix(in srgb, var(--principal) 30%, #fff);
+  background:
+    repeating-linear-gradient(45deg,
+      rgba(0,152,56,.05) 0 9px, rgba(0,0,0,0) 9px 18px),
+    var(--creme-2);
+  color:var(--tinta-3);
+}
+.vaga .simbolo{
+  width:42px; height:42px; border-radius:13px; display:grid; place-items:center;
+  background:rgba(0,152,56,.1); color:var(--principal);
+}
+.vaga .simbolo svg{ width:21px; height:21px; }
+.vaga b{
+  display:block; font-size:12px; font-weight:800; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--tinta-2);
+}
+.vaga i{ display:block; font-style:normal; font-size:11.5px; line-height:1.45; max-width:26ch; }
+.vaga.retrato, .foto-caixa.retrato { aspect-ratio:3/4; }
+/* Quadrado, não 4:3 deitado: as quatro fotos da trajetória são retratos e
+   quadrados de origem, e um corte em 4:3 comia cabeça e pé de todas. */
+.vaga.quadrada,.foto-caixa.quadrada{ aspect-ratio:1/1; }
+
+/* As fotos que a campanha manda são RECORTES com fundo transparente, não
+   fotos retangulares. Emolduradas num retângulo arredondado com `cover` elas
+   ficariam com um vazio esquisito em volta e a borda apareceria cortando o
+   nada. Então: a caixa reserva o espaço (aspect-ratio), a imagem cabe inteira
+   dentro dela (`contain`) apoiada embaixo, e um disco de luz atrás separa o
+   recorte do fundo — mesmo tratamento que a capa dava antes.
+   Se um dia chegar uma foto retangular de verdade, aí sim vale trocar por
+   `object-fit:cover` + `border-radius`. */
+.foto-caixa{ position:relative; }
+.foto-caixa::before{
+  content:''; position:absolute; z-index:0;
+  left:50%; bottom:5%; transform:translateX(-50%);
+  width:98%; aspect-ratio:1; border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.92),rgba(255,255,255,0) 66%);
+}
+.foto-real{
+  position:relative; z-index:1;
+  display:block; width:100%; height:100%;
+  object-fit:contain; object-position:center bottom;
+  filter:drop-shadow(0 22px 38px rgba(0,40,88,.22));
+}
+/* No cartão da trajetória a foto é emoldurada: são fotos retangulares de
+   verdade (ato, palanque, premiação), não recortes. O corte favorece o alto
+   porque em todas as quatro o rosto está na parte de cima. */
+.marco-foto .foto-caixa::before{ display:none; }
+.marco-foto .foto-real{ object-fit:cover; object-position:center 28%; filter:none; }
+
+/* --- Quem é a Sol ------------------------------------------------------- */
+.quem{ background:var(--papel); }
+/* A foto vem PRIMEIRO na fonte: no celular ela entra logo depois do título,
+   que é onde ela funciona como respiro. No desktop vira a coluna da esquerda. */
+.quem-grid{ display:grid; grid-template-columns:1fr; gap:clamp(24px,4vw,46px); margin-top:34px; }
+.quem-lado{ display:flex; flex-direction:column; gap:18px; align-self:start; }
+.quem-texto p{ margin:0 0 18px; font-size:clamp(15.5px,3.6vw,17.5px); color:var(--tinta-2); }
+.quem-texto p:first-child{ font-size:clamp(17px,4.2vw,20px); color:var(--tinta); font-weight:500; }
+.quem-texto strong{ color:var(--tinta); font-weight:700; }
+.quem-texto p:last-child{ margin-bottom:0; }
+
+/* A citação é uma faixa larga e centrada, entre o título e as colunas. Ela é
+   a frase que resume a candidatura inteira — espremida numa coluna estreita
+   virava legenda. */
+.citacao{
+  position:relative;
+  max-width:790px; margin:clamp(34px,5vw,54px) auto 0; text-align:center;
+  background:linear-gradient(170deg,var(--creme-2),var(--papel));
+  border:1px solid var(--linha); border-top:4px solid var(--principal);
+  border-radius:var(--r-m); padding:30px 30px 26px;
+  box-shadow:var(--sombra);
+}
+.citacao p{
+  margin:0; font-family:'Fraunces',serif; font-weight:600; font-style:italic;
+  font-size:clamp(19px,3.4vw,29px); line-height:1.26; color:var(--tinta);
+  letter-spacing:-.015em;
+}
+/* As duas linhas são fixas a pedido da campanha. Cada trecho é um <span> que
+   só vira bloco a partir de 680px: num celular de 375px duas linhas dessas
+   não cabem, e forçar com <br> deixaria a quebra presa lá também.
+   NÃO troque por <br>. */
+@media (min-width:680px){ .citacao .linha{ display:block; } }
+/* A aspa decorativa solta no topo saiu: com as aspas de verdade abrindo e
+   fechando a frase, ficavam três marcas de citação na mesma caixa. */
+.citacao cite{
+  display:block; margin-top:18px; font-style:normal;
+  font-size:11.5px; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--principal);
+}
+@media (min-width:940px){
+  /* A coluna da foto cresceu (era .82fr). Ela ainda sangra um pouco pra
+     esquerda, por cima do respiro da faixa: é o que deixa a foto grande sem
+     estreitar demais a coluna do texto. */
+  .quem-grid{ grid-template-columns:minmax(0,1fr) minmax(0,1.16fr); }
+  .quem-lado{ margin-left:calc(-1 * clamp(0px,3vw,48px)); }
+  /* A caixa da foto é mais BAIXA que o 3/4 padrão. Numa caixa 3/4 ela crescia
+     até ~690px de altura e passava bem abaixo do fim do texto, deixando a
+     seção pesada embaixo. Com 11/12 as duas colunas terminam quase juntas.
+     Encurtar SEM estreitar exigiria cortar a arte no meio dos braços dela e
+     decepar o canto arredondado do cartão — por isso ela diminui proporcional
+     em vez de ser cortada. */
+  #fotoQuem .foto-caixa{ aspect-ratio:11/12; }
+  /* A coluna inteira gruda, não só a citação: a foto tem que acompanhar a
+     leitura do texto ao lado. */
+  .quem-lado{ position:sticky; top:calc(var(--topo-h) + 26px); }
+}
+
+/* --- Marcos / credenciais ---------------------------------------------- */
+.marcos{ background:var(--creme); }
+.marcos-grade{
+  display:grid; grid-template-columns:1fr; gap:14px; margin-top:34px;
+}
+.marco{
+  position:relative; overflow:hidden;
+  background:var(--papel); border:1px solid var(--linha); border-radius:var(--r-g);
+  box-shadow:var(--sombra);
+  transition:transform .34s cubic-bezier(.16,1,.3,1), box-shadow .34s ease, border-color .34s ease;
+}
+/* A foto ocupa o topo do cartão inteiro, de borda a borda. A vaga perde as
+   bordas laterais pra não desenhar um retângulo dentro de outro. */
+.marco-foto .vaga,
+.marco-foto .foto-real{ border-radius:0; }
+.marco-foto .vaga{ border-width:0 0 2px; }
+.marco-corpo{ padding:22px; position:relative; }
+.marco::after{
+  content:''; position:absolute; left:0; right:0; top:0; height:3px;
+  background:linear-gradient(90deg,var(--principal),var(--destaque));
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.marco:hover{ transform:translateY(-4px); box-shadow:var(--sombra-f); border-color:rgba(0,152,56,.34); }
+.marco:hover::after{ transform:scaleX(1); }
+/* O selo fica INTEIRO dentro do corpo do cartão, embaixo da foto. Ele já
+   subiu por cima da borda da imagem e não pode voltar: por cima da foto ele
+   tapa justamente o rosto dela em três dos quatro cartões. */
+.marco .simbolo{
+  width:44px; height:44px; border-radius:13px; display:grid; place-items:center;
+  background:rgba(0,152,56,.1); color:var(--principal); margin:0 0 13px;
+}
+.marco .simbolo svg{ width:25px; height:25px; }
+.marco h3{ font-size:19px; margin:0 0 7px; }
+.marco p{ margin:0; font-size:14.5px; color:var(--tinta-2); }
+@media (min-width:700px){ .marcos-grade{ grid-template-columns:repeat(2,1fr); } }
+@media (min-width:1040px){ .marcos-grade{ grid-template-columns:repeat(4,1fr); gap:16px; } }
+
+/* --- Propostas ----------------------------------------------------------
+   CAMPO VERDE. Aqui a página vira outra coisa — sai a história e entra o
+   mandato —, e a cor é o que anuncia isso antes de qualquer título. Sobe por
+   cima da seção anterior com canto arredondado e sombra pra cima, no mesmo
+   gesto que o campo amarelo do fechamento e o rodapé fazem depois.
+
+   ⚠️ NÃO ponha `overflow:hidden` aqui: o trilho de eixos é `position:sticky`
+   dentro desta seção e overflow em qualquer ancestral mata o sticky.
+   Os cantos já são resolvidos pelo `border-radius:inherit` da textura.
+   ------------------------------------------------------------------------ */
+.propostas{
+  position:relative; z-index:2;
+  background:var(--campo);
+  border-radius:34px 34px 0 0; margin-top:-26px;
+  box-shadow:0 -26px 60px -20px rgba(0,40,88,.28),
+             0 1px 0 rgba(255,255,255,.6) inset;
+}
+/* Textura: grade fina em verde escuro, dissolvida nas bordas pra não competir
+   com os cartões brancos. Mesma receita do campo amarelo. */
+.propostas::after{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  border-radius:inherit;
+  background-image:
+    linear-gradient(to right,  rgba(0,90,40,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0,90,40,.07) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(ellipse 100% 62% at 50% 18%, #000 52%, transparent 100%);
+          mask-image:radial-gradient(ellipse 100% 62% at 50% 18%, #000 52%, transparent 100%);
+}
+/* O conteúdo fica acima da textura. O trilho fica de fora desta regra de
+   propósito: ele já é `sticky` (portanto posicionado) com z-index 30, e
+   incluí-lo aqui o rebaixaria pra 1 — o conteúdo passaria a rolar por cima
+   da barra grudenta. */
+.propostas > .faixa{ position:relative; z-index:1; }
+/* A alcinha no topo, igual à do campo amarelo do site irmão: diz que este
+   pedaço deslizou por cima do anterior. */
+.propostas::before{
+  content:''; position:absolute; left:50%; top:14px; transform:translateX(-50%);
+  z-index:2; width:54px; height:5px; border-radius:99px; background:rgba(0,40,88,.18);
+}
+
+/* Trilho de eixos que gruda no topo enquanto a pessoa percorre as 22.
+   É a única navegação secundária do site: sem ele, 22 cartões viram um rolo. */
+/* Fundo OPACO na cor do campo, sem backdrop-filter. A barra do topo já tem
+   um; dois desfoques empilhados obrigam o navegador a repintar a página
+   inteira atrás deles a cada quadro, e numa página de 7.500px isso engasga a
+   rolagem justo aqui, que é onde se rola mais.
+   A cor é a do campo (e não branco) pra ele não virar uma tarja clara
+   atravessando o verde quando gruda. */
+.trilho{
+  position:sticky; top:var(--topo-h); z-index:30;
+  margin-top:30px; padding:10px 0;
+  background:var(--campo);
+  border-bottom:1px solid rgba(0,90,40,.16);
+  box-shadow:0 10px 22px -20px rgba(0,40,88,.55);
+}
+.trilho-rolo{
+  display:flex; gap:8px; overflow-x:auto; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch; padding-inline:20px;
+  max-width:var(--faixa); margin-inline:auto;
+}
+.trilho-rolo::-webkit-scrollbar{ display:none; }
+.chip{
+  flex:0 0 auto; display:inline-flex; align-items:center; gap:8px;
+  padding:9px 15px; border-radius:999px; cursor:pointer;
+  border:1.5px solid rgba(0,90,40,.18); background:var(--papel);
+  color:var(--tinta-2); font-size:13px; font-weight:700; text-decoration:none;
+  transition:border-color .2s, color .2s, background .2s, transform .2s;
+}
+.chip svg{ width:15px; height:15px; }
+.chip .num{ font-size:11px; color:var(--tinta-3); font-weight:800; letter-spacing:.06em; }
+.chip:hover{ transform:translateY(-1px); border-color:var(--tinta-3); }
+.chip.aqui{
+  border-color:currentColor; color:var(--corEixo,var(--principal));
+  background:color-mix(in srgb, var(--corEixo,#009838) 9%, #fff);
+}
+.chip.aqui .num{ color:inherit; opacity:.7; }
+@media (min-width:680px){ .trilho-rolo{ padding-inline:30px; } }
+
+/* Cada eixo é uma FAIXA de largura inteira com o seu próprio tom — pedido da
+   campanha em 21/08/2026, pra dar diferença do eixo 1 pro 2, do 2 pro 3.
+   O tom sai da cor do próprio eixo diluída no campo verde, e a `--mistura`
+   alterna: ímpares mais claros, pares mais fortes. Só variar o matiz não
+   bastava — o eixo 1 e o 2 são os dois verdes e ficavam quase iguais. */
+.eixo{
+  position:relative; z-index:1;
+  padding:clamp(40px,6vh,66px) 0 clamp(34px,5.5vh,58px);
+  scroll-margin-top:calc(var(--topo-h) + 74px);
+  --mistura:8%;
+  background:color-mix(in srgb, var(--corEixo) var(--mistura), var(--campo));
+}
+.eixo:nth-of-type(even){ --mistura:17%; }
+.eixo:last-of-type{ padding-bottom:clamp(56px,9vh,94px); }
+.eixo-cabeca{ display:flex; gap:18px; align-items:flex-start; }
+.eixo-cabeca .simbolo{
+  flex:0 0 auto; width:54px; height:54px; border-radius:16px;
+  display:grid; place-items:center;
+  /* branco quase puro: a faixa atrás já é tingida com a mesma cor, então um
+     selo "12% da cor" some dentro dela. */
+  background:color-mix(in srgb, var(--corEixo) 8%, #fff);
+  color:var(--corEixo);
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--corEixo) 16%, transparent);
+}
+.eixo-cabeca .simbolo svg{ width:27px; height:27px; }
+.eixo-cabeca .n{
+  font-family:'Fraunces',serif; font-weight:900; font-size:13px;
+  letter-spacing:.1em; color:var(--corEixo);
+}
+.eixo-cabeca h3{ font-size:clamp(24px,5vw,34px); margin:4px 0 3px; }
+.eixo-cabeca .sub{
+  margin:0; font-size:12.5px; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--tinta-3);
+}
+.eixo-intro{
+  margin:18px 0 0; font-size:clamp(15.5px,3.6vw,17.5px); color:var(--tinta-2);
+  max-width:64ch; padding-left:2px;
+  border-left:3px solid color-mix(in srgb, var(--corEixo) 45%, #fff);
+  padding-left:16px;
+}
+.eixo-grade{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:26px; }
+@media (min-width:900px){ .eixo-grade{ grid-template-columns:repeat(2,1fr); gap:16px; } }
+
+.proposta{
+  position:relative; display:flex; flex-direction:column;
+  background:var(--papel); border:1px solid var(--linha); border-radius:var(--r-g);
+  padding:22px 20px 0; overflow:hidden;
+  transition:transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+}
+.proposta:hover{ transform:translateY(-3px); box-shadow:var(--sombra-f); border-color:color-mix(in srgb, var(--corEixo) 40%, #fff); }
+/* O número fica grande e apagado no canto: dá ordem à leitura sem competir
+   com o título. */
+.proposta .n{
+  position:absolute; right:14px; top:6px;
+  font-family:'Fraunces',serif; font-weight:900; font-size:54px; line-height:1;
+  color:color-mix(in srgb, var(--corEixo) 13%, #fff);
+  pointer-events:none; user-select:none;
+}
+.proposta h4{
+  position:relative; margin:0 0 10px; padding-right:46px;
+  font-family:'Fraunces',serif; font-weight:700; font-size:19px; line-height:1.2;
+  letter-spacing:-.018em; color:var(--tinta);
+}
+.proposta .compromisso{
+  margin:0 0 18px; font-size:15px; color:var(--tinta-2); flex:1;
+}
+/* O dado que sustenta a promessa, separado de propósito: é o que deixa a
+   proposta auditável em vez de virar slogan. */
+.proposta .dado{
+  margin:0 -20px 0; padding:14px 20px;
+  background:color-mix(in srgb, var(--corEixo) 7%, #fff);
+  border-top:1px solid color-mix(in srgb, var(--corEixo) 20%, #fff);
+  font-size:13.5px; line-height:1.5; color:var(--tinta-2);
+}
+.proposta .dado b{
+  display:block; margin-bottom:3px;
+  font-size:10.5px; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--corEixo);
+}
+
+/* --- Fechamento --------------------------------------------------------- */
+.fecho{
+  position:relative; z-index:3; overflow:hidden;
+  border-radius:34px 34px 0 0; margin-top:-26px;
+  box-shadow:0 -26px 60px -18px rgba(0,40,88,.34);
+  /* Amarelo bem fraco no topo dissolvendo pro branco embaixo. O campo cheio
+     de ouro saiu em 24/08/2026: pesava demais logo depois do campo verde das
+     propostas, e a página fechava em dois blocos de cor seguidos.
+     Agora é quase branco, então TODA a paleta volta a passar em contraste —
+     ver as cores de texto logo abaixo. */
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--ouro) 26%, #fff) 0%,
+      color-mix(in srgb, var(--ouro) 11%, #fff) 42%,
+      #FFFFFF 100%);
+  color:var(--tinta);
+  padding:clamp(60px,10vh,104px) 0 clamp(50px,8vh,88px);
+}
+@media (min-width:680px){
+  .propostas,.fecho{ border-radius:44px 44px 0 0; }
+}
+/* Textura fina em âmbar queimado, mascarada para sumir nas bordas. */
+.fecho::after{
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(to right,  rgba(126,78,0,.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(126,78,0,.07) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(ellipse 100% 78% at 50% 26%, #000 54%, transparent 100%);
+          mask-image:radial-gradient(ellipse 100% 78% at 50% 26%, #000 54%, transparent 100%);
+}
+.fecho .faixa{ position:relative; z-index:1; }
+.fecho-grid{ display:grid; grid-template-columns:1fr; gap:clamp(26px,4vw,48px); align-items:center; }
+/* Ela fica APOIADA na divisão com o rodapé: a margem negativa é exatamente o
+   padding de baixo da seção, então o pé da foto cai na borda do campo dourado.
+   Se mexer no padding-bottom da .fecho, mexa aqui junto. */
+.fecho-foto{ align-self:end; margin-bottom:calc(-1 * clamp(50px,8vh,88px)); }
+/* No campo amarelo a vaga pontilhada precisa de outro contraste: o creme
+   sumiria no fundo. */
+/* A vaga vazia só aparece se alguém esvaziar CAMPANHA.fotos.resumo. No campo
+   claro ela não precisa mais de tratamento próprio — herda o padrão. */
+@media (min-width:940px){
+  /* A foto foi crescendo a pedido da campanha: .72fr → 1fr → e agora mais
+     larga ainda. O tamanho vem de TRÊS lugares somados, porque nenhum deles
+     sozinho dá conta sem quebrar outra coisa:
+       1. a faixa do fechamento é mais larga que a do resto do site;
+       2. a coluna da foto leva a maior fatia;
+       3. ela sangra pra esquerda por cima do respiro da faixa.
+     O limite é a coluna do texto: abaixo de ~560px o <h2> de 46px passa de
+     duas pra três linhas, e "4 anos." fica órfão numa linha só. */
+  .fecho .faixa{ max-width:min(93vw,1240px); }
+  .fecho-grid{ grid-template-columns:minmax(0,1fr) minmax(0,1.2fr); align-items:end; }
+  .fecho-foto{ margin-left:calc(-1 * clamp(0px,2.8vw,44px)); }
+  .fecho-texto{ align-self:center; padding-bottom:clamp(10px,2vh,26px); }
+}
+/* Com o campo quase branco o verde escuro volta a passar (5,9:1) e o chapéu
+   fica igual ao das outras seções. No ouro cheio ele dava 3,7:1 e sumia. */
+.fecho .chapeu{ color:var(--escura); }
+.fecho h2{ font-size:clamp(27px,5.6vw,46px); margin:12px 0 0; max-width:20ch; }
+.fecho p{ margin:20px 0 0; font-size:clamp(15.5px,3.6vw,17.5px); max-width:62ch; color:var(--tinta-2); }
+/* Na fonte simples (Figtree) e em bold. Em Fraunces 29px ela ocupava cinco
+   linhas e esticava o "Em resumo" inteiro; aqui cabe em três e a seção
+   encurta junto. */
+.fecho .destaque-frase{
+  margin-top:22px; font-family:inherit; font-weight:700; font-style:normal;
+  font-size:clamp(16.5px,3.4vw,20px); line-height:1.42; color:var(--tinta);
+  max-width:44ch; letter-spacing:0;
+}
+.fecho-urna{ margin-top:34px; }
+.fecho .urna span{ box-shadow:0 16px 32px -18px rgba(0,40,88,.9); }
+/* Enquanto o campo era ouro cheio, a 4ª casa e o botão amarelo sumiam dentro
+   dele e viravam brancos. Com o campo quase branco a conta inverte: agora é o
+   BRANCO que sumiria. Os dois voltam ao amarelo da marca — sem override. */
+.fecho .assinatura{
+  margin-top:22px; font-size:13.5px; font-weight:700; letter-spacing:.05em;
+  color:var(--escura);
+}
+.fecho-botoes{ display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+.fecho-botoes .btn[hidden]{ display:none; }
+.fecho .btn-linha{ border-color:rgba(0,40,88,.28); }
+.fecho .btn-linha:hover{ border-color:var(--tinta); color:var(--tinta); background:rgba(255,255,255,.4); }
+
+/* --- Rodapé ------------------------------------------------------------- */
+footer{
+  position:relative; z-index:2;
+  background:var(--creme); border-radius:32px 32px 0 0; margin-top:-22px;
+  box-shadow:0 -20px 50px -22px rgba(0,40,88,.34);
+  padding:40px 0 44px; text-align:center;
+}
+footer img.marca{ height:56px; width:auto; margin:0 auto 18px; display:block;
+  animation:boia 12s ease-in-out infinite; }
+/* A logo do rodapé é a única coisa que boia no site — ela flutua livre, sem
+   nada embaixo pra descolar. (A foto da capa tinha esse laço e foi tirada
+   justamente porque abria uma fresta contra a faixa de números.) */
+@keyframes boia{ 0%,100%{ transform:translate3d(0,0,0); } 50%{ transform:translate3d(0,-8px,0); } }
+footer .provisoria{
+  display:block; font-family:'Fraunces',serif; font-weight:900; font-size:22px;
+  color:var(--principal); margin-bottom:16px;
+}
+footer .provisoria span{ color:var(--destaque); }
+.redes{ display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:22px; }
+.redes a{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 17px; border-radius:999px; text-decoration:none;
+  border:1px solid var(--linha); background:var(--papel);
+  color:var(--tinta); font-size:13.5px; font-weight:700;
+  transition:transform .2s, border-color .2s, box-shadow .2s, color .2s;
+}
+.redes a:hover{ transform:translateY(-2px); border-color:var(--principal); color:var(--escura); box-shadow:var(--sombra); }
+.redes a svg{ width:16px; height:16px; }
+.redes a[hidden]{ display:none; }
+footer .legenda{
+  margin:0 auto; max-width:58ch; font-size:11.5px; color:var(--tinta-3); line-height:1.7;
+}
+footer .legenda b{ color:var(--tinta-2); font-weight:700; }
+
+/* ==========================================================================
+   ENTRADA DOS BLOCOS — entram quando aparecem e recuam quando saem.
+   O estado escondido mora atrás de .anima, classe que o próprio JS põe no
+   <body> só depois de garantir que existe um observador para trazê-los de
+   volta. Sem JS, a página aparece inteira em vez de ficar em branco.
+   ========================================================================== */
+/* Sem will-change aqui de propósito. São mais de 40 elementos com [data-anim]
+   nesta página; will-change em todos cria 40 camadas de composição que ficam
+   na memória da placa de vídeo o tempo todo, mesmo depois da entrada já ter
+   acontecido. A animação é curta e roda uma vez só — não precisa da promessa. */
+[data-anim]{
+  transition:opacity .72s cubic-bezier(.2,.7,.25,1),
+             transform .82s cubic-bezier(.16,1,.3,1);
+  transition-delay:var(--atraso,0ms);
+}
+.anima [data-anim]{ opacity:0; }
+.anima [data-anim="baixo"]{ transform:translateY(38px); }
+.anima [data-anim="cima"] { transform:translateY(-28px); }
+.anima [data-anim="esq"]  { transform:translateX(-40px); }
+.anima [data-anim="dir"]  { transform:translateX(40px); }
+.anima [data-anim="zoom"] { transform:scale(.93); }
+.anima [data-anim].vem{ opacity:1; transform:none; }
+/* Na capa a entrada é imediata, guiada pela classe .pronto */
+.capa [data-anim]{ transition-duration:.9s; }
+.pronto .capa [data-anim]{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+  .poeira{ display:none; }
+  .luzes{ opacity:1; }
+  .luz{ animation:none; opacity:.7; }
+  [data-anim]{ opacity:1 !important; transform:none !important; }
+  .urna span{ opacity:1 !important; transform:none !important; }
+  /* As contínuas ficam PARADAS de verdade: só zerar o duration transformaria
+     um laço infinito em repintura sem fim. */
+  .sol-canto,
+  .btn-pulsa, .btn-pulsa svg, footer img.marca{ animation:none !important; }
+  .sol-canto{ opacity:.5; }
+  .capa-titulo{ clip-path:none !important; }
+}
+</style>
+</head>
+<body>
+
+<i class="progresso" aria-hidden="true"></i>
+<div class="legal" id="barraLegal"></div>
+
+<!-- ================= NAVEGAÇÃO ================= -->
+<header class="topo">
+  <div class="topo-in">
+    <a class="topo-marca" href="#capa" id="marcaTopo" aria-label="Início"></a>
+    <button class="hamburguer" id="hamburguer" aria-label="Abrir menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav id="menu">
+      <a href="#quem">A Sol</a>
+      <a href="#marcos">Trajetória</a>
+      <a href="#propostas">Propostas</a>
+      <a href="#fecho">1012</a>
+      <a href="#" id="linkGerador" hidden>Faça sua foto</a>
+      <a class="btn btn-principal" id="linkZapTopo" href="#" target="_blank" rel="noopener" hidden>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Z"/></svg>
+        Fale com a campanha
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= CAPA ================= -->
+  <section class="capa" id="capa">
+    <div class="luzes" aria-hidden="true">
+      <span class="luz a"></span>
+      <span class="luz b"></span>
+      <span class="luz c"></span>
+      <span class="poeira" style="left:10%; width:9px;  height:9px;  --t:19s; --d:0.0s;  --dx:24px"></span>
+      <span class="poeira" style="left:24%; width:6px;  height:6px;  --t:23s; --d:5.0s;  --dx:-18px"></span>
+      <span class="poeira" style="left:38%; width:12px; height:12px; --t:17s; --d:2.4s;  --dx:30px"></span>
+      <span class="poeira" style="left:55%; width:7px;  height:7px;  --t:21s; --d:8.0s;  --dx:-24px"></span>
+      <span class="poeira" style="left:70%; width:11px; height:11px; --t:25s; --d:1.4s;  --dx:20px"></span>
+      <span class="poeira" style="left:86%; width:6px;  height:6px;  --t:18s; --d:6.2s;  --dx:-26px"></span>
+    </div>
+    <img class="sol-canto" src="assets/sol-desfocado.png" alt="" aria-hidden="true">
+
+    <div class="faixa">
+      <div class="capa-texto">
+        <!-- O bloco de texto da capa é UMA arte só (assets/textos-capa.png):
+             chapéu, lema, "desde 2001" e o 1012 já vêm desenhados dentro.
+             Se o arquivo não carregar, o JS devolve a versão em texto. -->
+        <div class="capa-titulo" data-anim="baixo" style="--atraso:80ms">
+          <picture>
+            <source srcset="assets/textos-capa.webp" type="image/webp">
+            <img id="tituloCapa" src="assets/textos-capa.png" alt=""
+                 width="1100" height="1050">
+          </picture>
+        </div>
+
+        <div class="capa-botoes" data-anim="baixo" style="--atraso:300ms">
+          <a href="#quem" class="btn btn-principal btn-pulsa">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+            Conheça a história
+          </a>
+          <a href="#propostas" class="btn btn-destaque btn-pulsa">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 6h11M8.5 12h11M8.5 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg>
+            Ver propostas
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- O banner vem DEPOIS do texto na fonte de propósito: no desktop ele é
+         posicionado por cima como fundo, e no celular ele cai no fluxo logo
+         abaixo do texto, que é onde funciona. -->
+    <picture class="capa-banner">
+      <source srcset="assets/hero-capa.webp" type="image/webp">
+      <img src="assets/hero-capa.jpg" alt="Enfermeira Sol" width="2400" height="1220">
+    </picture>
+  </section>
+
+  <!-- ================= NÚMEROS ================= -->
+  <section class="numeros" aria-label="Resumo">
+    <div class="faixa">
+      <div class="numeros-in" id="numeros"></div>
+    </div>
+  </section>
+
+  <!-- ================= QUEM É A SOL ================= -->
+  <section class="bloco quem" id="quem">
+    <div class="faixa">
+      <div class="bloco-titulo centro" data-anim="baixo">
+        <p class="chapeu">Quem é a Sol</p>
+        <h2>Antes de candidata,<br><em>enfermeira.</em></h2>
+        <span class="linha-fina"></span>
+      </div>
+
+      <div class="quem-grid">
+        <div class="quem-lado" data-anim="esq" style="--atraso:80ms">
+          <div id="fotoQuem"></div>
+        </div>
+
+        <div class="quem-texto" data-anim="baixo" style="--atraso:160ms">
+          <p>Meu nome é Sol. Aprendi a olhar para o Tocantins como se aprende a
+             cuidar de um paciente: de perto, com as mãos na realidade, sem
+             discurso pronto.</p>
+          <p>Não vim da política. Vim do plantão, do corredor de hospital, da
+             luta sindical. Foi ali que entendi na pele o que é cuidar de todo
+             mundo e, muitas vezes, não ser cuidada por ninguém.</p>
+          <p>Por isso lutei, junto ao <strong>COFEN</strong>, ao
+             <strong>COREN</strong> e aos sindicatos, pelas condições dignas de
+             quem trabalha na enfermagem. Fui liderança do movimento
+             <strong>Basta</strong>, que garantiu o reajuste da insalubridade a
+             todos os servidores do Tocantins, e do <strong>Mais RespeiTO</strong>,
+             que uniu a categoria em nível nacional. Fui madrinha estadual do
+             <strong>Piso Salarial da Enfermagem</strong> e recebi do COFEN o
+             <strong>Prêmio Anna Nery</strong>, a maior condecoração da
+             enfermagem brasileira. Fora do hospital, sou uma das principais
+             vozes do estado na causa animal, membro do Comitê Estadual de
+             Proteção e Defesa dos Animais.</p>
+          <p>Esse histórico não é discurso de campanha. É o que me trouxe até
+             aqui, e é o que vai me guiar na Câmara.</p>
+        </div>
+      </div>
+
+      <!-- A citação fecha a seção: vem depois do texto e da foto, como
+           assinatura do que acabou de ser contado. -->
+      <aside class="citacao" data-anim="zoom" style="--atraso:90ms">
+        <p><span class="linha">&ldquo;Não vim da política. Vim do plantão,</span>
+           <span class="linha">do corredor de hospital, da luta sindical.&rdquo;</span></p>
+        <cite>Enfermeira Sol</cite>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================= MARCOS ================= -->
+  <section class="bloco marcos" id="marcos">
+    <div class="faixa">
+      <div class="bloco-titulo" data-anim="baixo">
+        <p class="chapeu">Trajetória</p>
+        <h2>O que veio <em>antes</em> da candidatura.</h2>
+        <span class="linha-fina"></span>
+      </div>
+      <div class="marcos-grade" id="marcosGrade"></div>
+    </div>
+  </section>
+
+  <!-- ================= PROPOSTAS ================= -->
+  <section class="propostas" id="propostas">
+    <div class="faixa" style="padding-top:clamp(54px,9vh,92px)">
+      <div class="bloco-titulo" data-anim="baixo">
+        <p class="chapeu">O mandato</p>
+        <h2>Conheça as minhas <em>propostas</em>.</h2>
+        <span class="linha-fina"></span>
+      </div>
+    </div>
+
+    <div class="trilho">
+      <div class="trilho-rolo" id="trilho"></div>
+    </div>
+
+    <!-- Sem .faixa aqui: cada eixo é uma faixa de largura inteira e traz a
+         sua própria .faixa por dentro. -->
+    <div id="eixos"></div>
+  </section>
+
+  <!-- ================= FECHAMENTO ================= -->
+  <section class="fecho" id="fecho">
+    <div class="faixa">
+     <div class="fecho-grid">
+      <div class="fecho-foto" id="fotoResumo" data-anim="esq"></div>
+      <div class="fecho-texto">
+      <p class="chapeu" data-anim="baixo">Em resumo</p>
+      <h2 data-anim="baixo" style="--atraso:70ms">Isso é o que este mandato entrega em <em>4 anos.</em></h2>
+      <p data-anim="baixo" style="--atraso:140ms">
+        Não são 22 promessas soltas. São a tradução, em instrumentos reais de
+        mandato, de uma trajetória de quem já lutou por essas causas fora da
+        política, pela enfermagem, pelo SUS, pela educação inclusiva, pelos
+        animais e por um Tocantins que gera oportunidade além do agro e do
+        funcionalismo.
+      </p>
+      <p class="destaque-frase" data-anim="baixo" style="--atraso:210ms">
+        Uma enfermeira na Câmara dos Deputados, com os pés na realidade e as
+        mãos nos instrumentos certos pra transformá-la.
+      </p>
+
+      <div class="urna urna-grande fecho-urna" id="urnaFecho" aria-hidden="true" data-anim="zoom" style="--atraso:280ms"></div>
+      <p class="assinatura" data-anim="baixo" style="--atraso:340ms">
+        De plantão pelo Tocantins. Agora é só vitória. Sol, 1012.
+      </p>
+
+      <div class="fecho-botoes" data-anim="baixo" style="--atraso:400ms">
+        <a class="btn btn-principal btn-pulsa" id="linkPlano" href="#" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Baixar o plano completo
+        </a>
+        <a class="btn btn-destaque" id="linkFotoFecho" href="#" target="_blank" rel="noopener" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M6.5 20a5.8 5.8 0 0 1 11 0"/></svg>
+          Faça sua foto de perfil
+        </a>
+        <a class="btn btn-linha" id="linkGrupo" href="#" target="_blank" rel="noopener" hidden>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Z"/></svg>
+          Entrar no grupo da campanha
+        </a>
+      </div>
+      </div>
+     </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="faixa">
+    <div id="marcaRodape" data-anim="zoom"></div>
+    <div class="redes" data-anim="baixo" style="--atraso:80ms">
+      <a id="redeInsta" href="#" target="_blank" rel="noopener" hidden>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c2.7 0 3.1 0 4.1.1 1 0 1.7.2 2.3.4.6.3 1.1.6 1.6 1.1.5.5.8 1 1.1 1.6.2.6.4 1.3.4 2.3.1 1 .1 1.4.1 4.1s0 3.1-.1 4.1c0 1-.2 1.7-.4 2.3-.3.6-.6 1.1-1.1 1.6-.5.5-1 .8-1.6 1.1-.6.2-1.3.4-2.3.4-1 .1-1.4.1-4.1.1s-3.1 0-4.1-.1c-1 0-1.7-.2-2.3-.4-.6-.3-1.1-.6-1.6-1.1-.5-.5-.8-1-1.1-1.6-.2-.6-.4-1.3-.4-2.3C2 15.1 2 14.7 2 12s0-3.1.1-4.1c0-1 .2-1.7.4-2.3.3-.6.6-1.1 1.1-1.6.5-.5 1-.8 1.6-1.1.6-.2 1.3-.4 2.3-.4C8.9 2 9.3 2 12 2Zm0 1.8c-2.7 0-3 0-4 .1-.8 0-1.2.2-1.5.3-.4.1-.7.3-.9.6-.3.2-.5.5-.6.9-.1.3-.3.7-.3 1.5-.1 1-.1 1.3-.1 4s0 3 .1 4c0 .8.2 1.2.3 1.5.1.4.3.7.6.9.2.3.5.5.9.6.3.1.7.3 1.5.3 1 .1 1.3.1 4 .1s3 0 4-.1c.8 0 1.2-.2 1.5-.3.4-.1.7-.3.9-.6.3-.2.5-.5.6-.9.1-.3.3-.7.3-1.5.1-1 .1-1.3.1-4s0-3-.1-4c0-.8-.2-1.2-.3-1.5a2.5 2.5 0 0 0-.6-.9 2.5 2.5 0 0 0-.9-.6c-.3-.1-.7-.3-1.5-.3-1-.1-1.3-.1-4-.1Zm0 3.1a5.1 5.1 0 1 1 0 10.2 5.1 5.1 0 0 1 0-10.2Zm0 1.8a3.3 3.3 0 1 0 0 6.6 3.3 3.3 0 0 0 0-6.6Zm5.3-3.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg>
+        Instagram
+      </a>
+      <a id="redeZap" href="#" target="_blank" rel="noopener" hidden>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Z"/></svg>
+        WhatsApp
+      </a>
+      <a id="redeMail" href="#" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+        E-mail
+      </a>
+      <a id="redeGerador" href="#" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M6.5 20a5.8 5.8 0 0 1 11 0"/></svg>
+        Faça sua foto
+      </a>
+    </div>
+    <p class="legenda" id="rodapeLegal"></p>
+  </div>
+</footer>
+
+<script>
+/* ==========================================================================
+   1. TEXTOS E LINKS MONTADOS A PARTIR DA CONFIGURAÇÃO
+   Nada de texto fixo espalhado pelo arquivo: tudo sai do bloco CAMPANHA.
+   ========================================================================== */
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+
+$('#barraLegal').textContent = CAMPANHA.legalTopo;
+$('#rodapeLegal').innerHTML  =
+  `Propaganda eleitoral. ${CAMPANHA.tratamento} ${CAMPANHA.primeiroNome} —
+   ${CAMPANHA.cargo.toLowerCase()} · ${CAMPANHA.numero}.<br>
+   Realização: <b>${CAMPANHA.legenda}</b>.`;
+
+/* O bloco de texto da capa é uma arte com tudo desenhado dentro. O texto
+   alternativo continua saindo da configuração, e se o PNG não carregar a
+   versão em texto volta no lugar dele — a capa nunca fica muda. */
+(function(){
+  const im = $('#tituloCapa'); if(!im) return;
+  im.alt = `${CAMPANHA.tratamento} ${CAMPANHA.primeiroNome} — ${CAMPANHA.lema} `
+         + `${CAMPANHA.desde} ${CAMPANHA.numero}.`;
+  im.addEventListener('error', ()=>{
+    const caixa = im.closest('.capa-titulo'); if(!caixa) return;
+    caixa.classList.add('sem-arte');
+    caixa.innerHTML =
+      `<p class="chapeu">${CAMPANHA.cargo} · ${CAMPANHA.partido}</p>
+       <h1>${CAMPANHA.tratamento} <em>${CAMPANHA.primeiroNome}</em></h1>
+       <p class="lema">${CAMPANHA.lema}</p>
+       <p class="desde">${CAMPANHA.desde}</p>`;
+  });
+})();
+
+/* Logo: usa a arte se existir, senão escreve o nome. */
+(function(){
+  const provisoria = `<span class="provisoria">${CAMPANHA.tratamento} <span>${CAMPANHA.primeiroNome}</span></span>`;
+  const topo = $('#marcaTopo'), pe = $('#marcaRodape');
+  topo.innerHTML = provisoria; pe.innerHTML = provisoria;
+  /* A logo nova já traz o 1012 desenhado — é a mesma arte no topo e no
+     rodapé. Trocar de logo é trocar este caminho, num lugar só. */
+  const arte = 'assets/logo-1012.png';
+  const im = new Image();
+  im.onload = ()=>{
+    const alt = `${CAMPANHA.nome} ${CAMPANHA.numero}`;
+    topo.innerHTML = `<img src="${arte}" alt="${alt}">`;
+    pe.innerHTML   = `<img class="marca" src="${arte}" alt="${alt}">`;
+  };
+  im.src = arte;
+})();
+
+/* Links: cada um só aparece quando existe destino. */
+(function(){
+  const L = CAMPANHA.links;
+  const zap = L.whatsapp
+    ? `https://wa.me/${L.whatsapp}?text=${encodeURIComponent(CAMPANHA.zapTexto)}`
+    : '';
+  const liga = (sel, url) => {
+    const el = $(sel); if(!el || !url) return;
+    el.href = url; el.hidden = false;
+  };
+  liga('#linkZapTopo', zap);
+  liga('#redeZap',     zap);
+  liga('#redeInsta',   L.instagram);
+  liga('#redeMail',    L.email ? `mailto:${L.email}` : '');
+  liga('#linkPlano',   L.plano);
+  liga('#linkGrupo',   L.grupo || zap);
+  liga('#linkGerador', L.gerador);
+  liga('#redeGerador', L.gerador);
+  if(L.plano) $('#linkPlano').setAttribute('download','');
+  /* Sem o PDF e sem o grupo, o fechamento ficaria sem nenhuma chamada — uma
+     seção inteira terminando em nada. Nesse caso o gerador de foto entra no
+     lugar: é o que a campanha já tem no ar hoje. */
+  if(!L.plano && !L.grupo && !zap && L.gerador){
+    const b = $('#linkFotoFecho'); b.href = L.gerador; b.hidden = false;
+  }
+  $$('#linkGerador, #redeGerador').forEach(a=>{ a.target='_blank'; a.rel='noopener'; });
+
+  /* O aviso amarelo de "Versão de montagem" saiu a pedido da campanha em
+     24/08/2026. O comportamento que ele explicava CONTINUA valendo: link
+     vazio em CAMPANHA.links deixa o botão escondido em vez de levar a lugar
+     nenhum. A lista do que falta agora vive só no CLAUDE.md. */
+})();
+
+/* Bloco do número, casa por casa (estilo urna). */
+(function(){
+  const casas = CAMPANHA.numero.split('');
+  ['#urnaCapa','#urnaFecho'].forEach(sel=>{
+    const alvo = $(sel); if(!alvo) return;
+    alvo.innerHTML = casas
+      .map((d,i)=>`<span style="--i:${i}">${d}</span>`).join('');
+  });
+})();
+
+/* ==========================================================================
+   2. ÍCONES — SVG inline, traço de 2px. Emoji renderiza diferente em cada
+   sistema; num institucional isso vira ruído.
+   ========================================================================== */
+/* Patinha CHEIA — vazada ela some nos tamanhos pequenos (chip 15px, selo
+   23px). Usada pelo eixo da causa animal e pelo marco "Defesa Animal". */
+const PATA =
+  '<g fill="currentColor" stroke="none">' +
+  '<ellipse cx="7.6" cy="8.4" rx="2.3" ry="3"/><ellipse cx="16.4" cy="8.4" rx="2.3" ry="3"/>' +
+  '<ellipse cx="3.5" cy="14" rx="2" ry="2.6"/><ellipse cx="20.5" cy="14" rx="2" ry="2.6"/>' +
+  '<path d="M12 12.4c3.1 0 5.5 2.4 5.5 5 0 2-1.7 3.4-3.6 3.4-1.2 0-1.4-.5-1.9-.5s-.7.5-1.9.5' +
+  'c-1.9 0-3.6-1.4-3.6-3.4 0-2.6 2.4-5 5.5-5Z"/></g>';
+
+const ICONES = {
+  saude:   '<path d="M3.5 12h3l2-4 3 8 2.5-6 1.5 2h5"/>',
+  educacao:'<path d="M3 6.5A16 16 0 0 1 12 8a16 16 0 0 1 9-1.5v11A16 16 0 0 0 12 19a16 16 0 0 0-9-1.5Z"/><path d="M12 8v11"/>',
+  /* A patinha é a única CHEIA. Vazada, as almofadinhas ficam com 1,7px de
+     largura e um traço de 2px por fora: nos 15px do chip e nos 23px do selo
+     elas viravam bolinhas sólidas sem forma. Os atributos aqui sobrepõem o
+     fill/stroke do <svg> em volta. */
+  animal:  PATA,
+  infra:   '<path d="M4 21 8 3M20 21 16 3"/><path d="M12 4v3M12 10.5v3M12 17v3"/>',
+  trabalho:'<rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M2.5 12.5h19"/>',
+  /* Medalha: fita reta em cima, duas pernas descendo até o disco. A versão
+     anterior tinha as fitas subindo pra FORA (x 6,5 e 17,5) enquanto a barra
+     de cima ia de 9 a 15 — os traços não se encontravam e o desenho saía
+     quebrado. */
+  medalha: '<path d="M6.6 3.4h10.8M8.7 3.4l1.4 7.4M15.3 3.4l-1.4 7.4"/><circle cx="12" cy="15.3" r="4.7"/>',
+  /* Era um punho erguido com dedos separados: detalhe demais pra 23px, virava
+     rabisco. Um megafone diz a mesma coisa de um movimento que fez barulho e
+     sobrevive ao tamanho. */
+  punho:   '<path d="M4 10.4v3.2a1.6 1.6 0 0 0 1.6 1.6h2.2l6.4 3.9V5.9L7.8 9.8H5.6A1.6 1.6 0 0 0 4 11.4Z"/><path d="M17.8 9.3a4.4 4.4 0 0 1 0 5.4M7.8 15.2v3.1a1.6 1.6 0 0 0 1.6 1.6h.6"/>',
+  /* Coração simples e cheio de forma. A versão anterior tinha um talinho com
+     seta em cima que, no tamanho do selo, parecia um risco solto. */
+  maos:    '<path d="M12 20.4 4.7 13.1a4.6 4.6 0 0 1 6.5-6.5l.8.8.8-.8a4.6 4.6 0 0 1 6.5 6.5Z"/>',
+  pata:    PATA,
+  lista:   '<path d="M9 6h11M9 12h11M9 18h11"/><path d="m3.5 5.8 1.2 1.2 2-2.2M3.5 11.8l1.2 1.2 2-2.2M3.5 17.8l1.2 1.2 2-2.2"/>',
+  bussola: '<circle cx="12" cy="12" r="9"/><path d="m15.2 8.8-2 4.4-4.4 2 2-4.4z"/>',
+  coracao: '<path d="M12 20.5S3.8 15.7 3.8 9.9A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 8.2 2.3c0 5.8-8.2 10.6-8.2 10.6Z"/>',
+  urna:    '<path d="M3.5 10.5h17V20a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M8.5 10.5V4.2a1 1 0 0 1 1.2-1l6.6 1.4a1 1 0 0 1 .8 1V10.5"/><path d="M10.5 14.5h3"/>',
+  foto:    '<rect x="2.5" y="5" width="19" height="15" rx="2.5"/><circle cx="12" cy="12" r="3.4"/><path d="M7.5 5 9 2.8h6L16.5 5"/>'
+};
+const svg = nome => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true">${ICONES[nome] || ''}</svg>`;
+
+/* ==========================================================================
+   3. MONTAGEM DO CONTEÚDO
+   As 22 propostas e os 5 eixos são desenhados a partir dos dados. Editar a
+   copy é editar o bloco de configuração — não o HTML.
+   ========================================================================== */
+const escapa = t => String(t).replace(/[&<>"]/g, c =>
+  ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+
+/* Vaga de foto: com caminho vira imagem, sem caminho vira a moldura
+   pontilhada. O espaço reservado é o mesmo nos dois casos, então o layout não
+   pula quando as fotos chegarem.
+   Caminho sem extensão vira um <picture> com .webp e .png de reserva; com
+   extensão é usado como veio. */
+function vaga(caminho, forma, rotulo, alt){
+  if(!caminho){
+    return `<div class="vaga ${forma}">
+       <span class="simbolo">${svg('foto')}</span>
+       <b>Foto em breve</b>
+       <i>${escapa(rotulo)}</i>
+     </div>`;
+  }
+  const c = escapa(caminho), a = escapa(alt || '');
+  /* O irmão .webp é derivado do próprio caminho. Se o arquivo já for .webp,
+     sai um <img> simples — nada de <source> apontando pra ele mesmo. */
+  const webp = c.replace(/\.[a-z0-9]+$/i, '.webp');
+  const img = (webp === c)
+    ? `<img class="foto-real" src="${c}" alt="${a}">`
+    : `<picture>
+         <source srcset="${webp}" type="image/webp">
+         <img class="foto-real" src="${c}" alt="${a}">
+       </picture>`;
+  return `<div class="foto-caixa ${forma}">${img}</div>`;
+}
+
+$('#fotoQuem').innerHTML   = vaga(CAMPANHA.fotos.quem,   'retrato',
+  'Retrato dela para esta seção', `${CAMPANHA.tratamento} ${CAMPANHA.primeiroNome}`);
+$('#fotoResumo').innerHTML = vaga(CAMPANHA.fotos.resumo, 'retrato',
+  'Foto para o fechamento', `${CAMPANHA.tratamento} ${CAMPANHA.primeiroNome}`);
+
+/* Faixa de números */
+(function(){
+  const dados = [
+    { valor:PROPOSTAS.length, rotulo:'Propostas',        icone:'lista'    },
+    { valor:EIXOS.length,     rotulo:'Eixos de mandato', icone:'bussola'  },
+    /* 2001 e 1012 são `cru`: ano e número de urna subindo de zero viram
+       caça-níquel. Os dois primeiros contam. */
+    { valor:2001,             rotulo:'Cuidando desde',   icone:'coracao', cru:true },
+    { valor:CAMPANHA.numero,  rotulo:'Na urna',          icone:'urna',    cru:true }
+  ];
+  $('#numeros').innerHTML = dados.map(d => `
+    <div class="item">
+      <span class="topo-item">
+        <span class="simbolo">${svg(d.icone)}</span>
+        <b data-conta="${d.cru ? '' : d.valor}">${d.cru ? d.valor : 0}</b>
+      </span>
+      <span>${escapa(d.rotulo)}</span>
+    </div>`).join('');
+})();
+
+/* Marcos da trajetória */
+$('#marcosGrade').innerHTML = MARCOS.map((m,i) => `
+  <article class="marco" data-anim="baixo" style="--atraso:${i*90}ms">
+    <div class="marco-foto">${vaga(m.foto, 'quadrada', m.titulo, m.titulo)}</div>
+    <div class="marco-corpo">
+      <span class="simbolo">${svg(m.icone)}</span>
+      <h3>${escapa(m.titulo)}</h3>
+      <p>${escapa(m.texto)}</p>
+    </div>
+  </article>`).join('');
+
+/* Trilho de eixos + os cinco blocos de propostas */
+(function(){
+  $('#trilho').innerHTML = EIXOS.map(e => `
+    <a class="chip" href="#eixo-${e.id}" data-eixo="${e.id}" style="--corEixo:${e.cor}">
+      ${svg(e.icone)}<span class="num">${e.n}</span>${escapa(e.titulo)}
+    </a>`).join('');
+
+  $('#eixos').innerHTML = EIXOS.map(e => {
+    const cartoes = PROPOSTAS.filter(p => p.eixo === e.id).map((p,i) => `
+      <article class="proposta" data-anim="baixo" style="--atraso:${(i%2)*70}ms">
+        <span class="n" aria-hidden="true">${p.n}</span>
+        <h4>${escapa(p.titulo)}</h4>
+        <p class="compromisso">${escapa(p.compromisso)}</p>
+        <p class="dado"><b>Por quê</b>${escapa(p.dado)}</p>
+      </article>`).join('');
+    return `
+      <section class="eixo" id="eixo-${e.id}" style="--corEixo:${e.cor}">
+       <div class="faixa">
+        <header class="eixo-cabeca" data-anim="baixo">
+          <span class="simbolo">${svg(e.icone)}</span>
+          <div>
+            <span class="n">EIXO ${e.n}</span>
+            <h3>${escapa(e.titulo)}</h3>
+            <p class="sub">${escapa(e.sub)}</p>
+          </div>
+        </header>
+        <p class="eixo-intro" data-anim="baixo" style="--atraso:80ms">${escapa(e.intro)}</p>
+        <div class="eixo-grade">${cartoes}</div>
+       </div>
+      </section>`;
+  }).join('');
+})();
+
+/* ==========================================================================
+   4. MOVIMENTO
+   a) entrada e saída dos blocos;  b) menu do celular;  c) barra de leitura;
+   d) qual seção está sendo lida;  e) contadores.
+   Nada aqui sequestra o scroll do usuário.
+   ========================================================================== */
+(function(){
+  const parado = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  /* --- a) entrada dos blocos ------------------------------------------- */
+  const alvos = $$('[data-anim]:not(.capa [data-anim])');
+  if(parado || !('IntersectionObserver' in window)){
+    alvos.forEach(el => el.classList.add('vem'));
+  }else{
+    document.body.classList.add('anima');
+    /* Entra UMA vez e fica. O site irmão liga e desliga a classe, e lá isso
+       faz sentido: são poucos blocos e a página é curta. Aqui são 22 cartões
+       de proposta — deixar que apaguem ao sair significa repintar o tempo
+       todo enquanto a pessoa lê, e o texto some do canto do olho de quem
+       volta pra reler. */
+    const olho = new IntersectionObserver((ent, obs) => {
+      ent.forEach(e => {
+        if(!e.isIntersecting) return;
+        e.target.classList.add('vem');
+        obs.unobserve(e.target);
+      });
+    }, { threshold:0.08, rootMargin:'0px 0px -5% 0px' });
+    alvos.forEach(el => olho.observe(el));
+  }
+
+  /* --- b) menu do celular ---------------------------------------------- */
+  const botao = $('#hamburguer'), menu = $('#menu');
+  const fecha = ()=>{
+    document.body.classList.remove('menu-aberto');
+    botao.setAttribute('aria-expanded','false');
+  };
+  botao.addEventListener('click', ()=>{
+    const abriu = document.body.classList.toggle('menu-aberto');
+    botao.setAttribute('aria-expanded', abriu ? 'true' : 'false');
+  });
+  menu.addEventListener('click', e => { if(e.target.closest('a')) fecha(); });
+  addEventListener('keydown', e => { if(e.key === 'Escape') fecha(); });
+
+  /* A altura real da faixa legal alimenta o topo do menu no celular. Ela
+     quebra em duas linhas em tela estreita, então é MEDIDA, não chutada.
+     ResizeObserver e não o evento `resize`: o `resize` dispara antes do
+     reflow e devolve a altura velha. */
+  const legal = $('#barraLegal');
+  const mediaLegal = ()=> document.documentElement.style
+    .setProperty('--legal', Math.round(legal.getBoundingClientRect().height) + 'px');
+  mediaLegal();
+  if('ResizeObserver' in window) new ResizeObserver(mediaLegal).observe(legal);
+  else addEventListener('resize', mediaLegal);
+
+  /* --- c) barra de leitura + sombra do topo ----------------------------- */
+  const barra = document.querySelector('.progresso');
+  let agendado = false;
+  const passo = ()=>{
+    agendado = false;
+    const alto = document.documentElement.scrollHeight - innerHeight;
+    const lido = alto > 0 ? Math.min(1, Math.max(0, scrollY / alto)) : 0;
+    barra.style.setProperty('--lido', lido.toFixed(4));
+    document.body.classList.toggle('rolou', scrollY > 8);
+  };
+  addEventListener('scroll', ()=>{
+    if(!agendado){ agendado = true; requestAnimationFrame(passo); }
+  }, { passive:true });
+  addEventListener('resize', passo);
+  passo();
+
+  /* --- d) qual seção está sendo lida ------------------------------------ */
+  if('IntersectionObserver' in window){
+    const marca = (sel, id) => {
+      $$(sel).forEach(a => a.classList.toggle('aqui',
+        a.getAttribute('href') === '#' + id));
+    };
+    /* seções do menu de cima */
+    const secoes = ['quem','marcos','propostas','fecho']
+      .map(id => document.getElementById(id)).filter(Boolean);
+    const olhoTopo = new IntersectionObserver(ent => {
+      const visivel = ent.filter(e => e.isIntersecting)
+        .sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if(visivel) marca('.topo nav a', visivel.target.id);
+    }, { rootMargin:'-45% 0px -50% 0px' });
+    secoes.forEach(s => olhoTopo.observe(s));
+
+    /* chips dos eixos */
+    const olhoEixo = new IntersectionObserver(ent => {
+      const visivel = ent.filter(e => e.isIntersecting)
+        .sort((a,b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if(!visivel) return;
+      const id = visivel.target.id.replace('eixo-','');
+      $$('.chip').forEach(c => c.classList.toggle('aqui', c.dataset.eixo === id));
+      /* O chip ativo entra na vista sozinho — mas mexendo SÓ no scroll
+         horizontal do trilho. Com scrollIntoView o navegador também rolava a
+         PÁGINA, brigando com o dedo do usuário: era isso que fazia a rolagem
+         das propostas engasgar. */
+      const rolo = document.querySelector('.trilho-rolo');
+      const ativo = rolo && rolo.querySelector('.chip.aqui');
+      if(ativo){
+        const alvo = ativo.offsetLeft - (rolo.clientWidth - ativo.offsetWidth) / 2;
+        rolo.scrollTo({ left:Math.max(0, alvo), behavior:'smooth' });
+      }
+    }, { rootMargin:'-30% 0px -55% 0px' });
+    $$('.eixo').forEach(s => olhoEixo.observe(s));
+  }
+
+  /* --- e) contadores ---------------------------------------------------- */
+  const contadores = $$('[data-conta]').filter(b => b.dataset.conta !== '');
+  if(contadores.length){
+    if(parado || !('IntersectionObserver' in window)){
+      contadores.forEach(b => b.textContent = b.dataset.conta);
+    }else{
+      const olho = new IntersectionObserver((ent, obs) => {
+        ent.forEach(e => {
+          if(!e.isIntersecting) return;
+          obs.unobserve(e.target);
+          const fim = Number(e.target.dataset.conta) || 0;
+          const dur = 900, t0 = performance.now();
+          const anda = agora => {
+            const p = Math.min(1, (agora - t0) / dur);
+            const suave = 1 - Math.pow(1 - p, 3);
+            e.target.textContent = Math.round(fim * suave);
+            if(p < 1) requestAnimationFrame(anda);
+          };
+          requestAnimationFrame(anda);
+        });
+      }, { threshold:0.6 });
+      contadores.forEach(b => olho.observe(b));
+    }
+  }
+
+  /* --- f) a capa entra assim que a página abre --------------------------- */
+  requestAnimationFrame(()=> requestAnimationFrame(()=>
+    document.body.classList.add('pronto')));
+})();
+</script>
+</body>
+</html>
