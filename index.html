@@ -48,6 +48,20 @@ const CAMPANHA = {
   },
   zapTexto: 'Oi! Quero falar com a campanha da Enfermeira Sol 1012.',
 
+  /* MURAL DE IDEIAS. O site é estático, então o mural só vira mural DE VERDADE
+     (card de um visitante aparecendo pro outro, curtida somando entre todo
+     mundo) com um banco por trás. Ver `mural.sql` e o CLAUDE.md.
+
+     Vazio  = o formulário manda a ideia pelo WhatsApp e o mural mostra só o
+              que a campanha já aprovou em IDEIAS, aqui embaixo.
+     Cheio  = o card entra no banco, a campanha aprova, e aí ele aparece pra
+              todo mundo com a curtida valendo entre visitantes. */
+  mural:{
+    url:   '',                          // <<< FALTA: https://SEUPROJETO.supabase.co
+    chave: ''                           // <<< FALTA: a chave `anon` do projeto
+  },
+  muralTexto: 'Oi! Quero mandar uma sugestão pro mandato da Enfermeira Sol 1012.',
+
   /* Fotos das seções. Vazio = aparece a moldura pontilhada de "foto em breve"
      no lugar; preenchido = vira a imagem.
 
@@ -180,6 +194,17 @@ const MARCOS = [
     texto:'Madrinha estadual do Piso Salarial da Enfermagem, ao lado do COFEN, do COREN e dos sindicatos.' },
   { icone:'pata',    titulo:'Defesa Animal', foto:'assets/marco-animal.jpg',
     texto:'Membro do Comitê Estadual de Proteção e Defesa dos Animais e uma das principais vozes do estado na causa.' }
+];
+
+/* As ideias que a campanha JÁ APROVOU para o mural. Enquanto não existir banco,
+   é só daqui que saem os cards; com banco, estas continuam aparecendo junto.
+
+   ⚠️ Vazio de propósito. Vale aqui a mesma regra do resto da página: nada é
+   inventado. Card de mural é fala de eleitor, então só entra o que chegou de
+   verdade e passou pela campanha. Sugestão inventada pra "encher o mural" é a
+   pior coisa que se pode pôr num site de campanha. */
+const IDEIAS = [
+  // { nome:'Maria', cidade:'Palmas', texto:'…', curtidas:0 }
 ];
 </script>
 
@@ -649,6 +674,47 @@ section{ position:relative; }
    isso o título dela ficava no tamanho padrão do navegador — menor que todos
    os outros. Amarrar a regra ao título, e não à seção, resolve de vez. */
 .bloco h2, .bloco-titulo h2{ font-size:clamp(28px,5.6vw,46px); margin:12px 0 0; }
+
+/* --------------------------------------------------------------------------
+   BRILHO QUE VARRE OS TÍTULOS
+
+   A receita comum pra isso é `background-clip:text` com
+   `-webkit-text-fill-color:transparent`: o texto vira janela pro gradiente.
+   AQUI ELA NÃO SERVE. Todos os títulos desta página têm um <em> colorido
+   dentro ("Conheça as minhas <em>propostas</em>"), e o text-fill-color é
+   herdado: o verde do <em> seria achatado no gradiente do pai e o site
+   perderia os títulos de duas cores, que são a marca dele.
+
+   Então o brilho é uma FAIXA DE LUZ passando por cima, em `mix-blend-mode`.
+   As duas cores continuam intactas embaixo, e como a faixa é quase branca
+   sobre fundos já claros, ela só se revela onde há letra escura.
+
+   A força mora numa variável só (--brilho-forca): é o número a mexer se a
+   campanha achar demais ou de menos.
+   -------------------------------------------------------------------------- */
+.bloco-titulo h2, .fecho-texto h2{ position:relative; --brilho-forca:.34; }
+.bloco-titulo h2::after, .fecho-texto h2::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  mix-blend-mode:screen;
+  background-repeat:no-repeat;
+  background-size:55% 100%;
+  background-position-x:180%;
+  background-image:linear-gradient(105deg,
+    transparent 0%,
+    rgba(255,255,255,var(--brilho-forca)) 50%,
+    transparent 100%);
+}
+/* A varredura leva ~1,5s e depois espera: o resto do ciclo é a faixa parada
+   fora da tela, à direita. É como o componente original faz (duration 1.5 +
+   repeatDelay 1.5), só que sem precisar de biblioteca de animação. */
+@keyframes varre-brilho{
+  0%      { background-position-x:-70%; }
+  48%,100%{ background-position-x:180%; }
+}
+.bloco-titulo h2.varre::after, .fecho-texto h2.varre::after{
+  animation:varre-brilho 3.2s linear infinite;
+  animation-delay:var(--brilho-atraso, 0s);
+}
 .bloco h2 em, .bloco-titulo h2 em{ font-style:normal; color:var(--principal); }
 .bloco .linha-fina, .bloco-titulo .linha-fina{
   display:block;
@@ -975,6 +1041,227 @@ section{ position:relative; }
   color:var(--corEixo);
 }
 
+/* --------------------------------------------------------------------------
+   MURAL DE IDEIAS. Entra entre o campo verde das propostas e o campo ouro do
+   fechamento, e é de propósito o único andar CREME entre os dois: verde
+   saturado seguido de ouro seguido de mais uma cor fecharia a página em três
+   blocos tingidos em sequência. Aqui a página respira antes do pedido de voto.
+   Sobe por cima das propostas no mesmo gesto de todas as viradas de campo:
+   canto arredondado, margem negativa e sombra pra cima.
+   -------------------------------------------------------------------------- */
+.ideias{
+  position:relative; z-index:3;
+  /* O campo NAO vai pro branco. Sao tres camadas aqui: o fundo creme, o
+     painel branco do formulario e os cards verdes. Se o fundo virasse branco,
+     o painel sumiria dentro dele justamente na metade de baixo, que e' onde
+     ele fica. */
+  background:linear-gradient(180deg,
+    var(--creme) 0%,
+    color-mix(in srgb, var(--principal) 6%, var(--creme)) 100%);
+  border-radius:34px 34px 0 0; margin-top:-26px;
+  box-shadow:0 -26px 60px -20px rgba(0,40,88,.26),
+             0 1px 0 rgba(255,255,255,.7) inset;
+  padding:clamp(54px,9vh,92px) 0 clamp(50px,8vh,88px);
+}
+@media (min-width:680px){ .ideias{ border-radius:44px 44px 0 0; } }
+.ideias[hidden]{ display:none; }
+
+/* Duas colunas: o convite com o formulário à esquerda, o mural à direita.
+   O formulário gruda enquanto o mural rola, porque o mural cresce sem limite
+   e a pessoa que se anima lendo as ideias tem que achar o campo de escrever
+   sem voltar pro topo. */
+/* O respiro entre a abertura centrada e as duas colunas. Sem ele a chamada
+   encosta no título do mural: medido, dava 0px de folga. */
+.ideias-grid{
+  margin-top:clamp(32px,5vh,54px);
+  display:grid; grid-template-columns:1fr; gap:clamp(28px,4vw,46px);
+}
+@media (min-width:940px){
+  /* Colunas iguais. Em .85fr o painel do formulário sobrava 314px por dentro
+     e os dois campos lado a lado ficavam com 150px cada, cortando o texto. */
+  .ideias-grid{ grid-template-columns:1fr 1fr; align-items:start; }
+  .ideias-convite{ position:sticky; top:calc(var(--topo-h) + 18px); }
+}
+
+.ideias h2{ margin:12px 0 0; }
+.ideias-convite p{ margin:18px 0 0; font-size:clamp(15.5px,3.6vw,17.5px); color:var(--tinta-2); max-width:52ch; }
+.ideias-convite p:first-child{ margin-top:0; }
+.ideias-convite p strong{ color:var(--tinta); font-weight:700; }
+
+/* "E eu quero ouvir você!" fecha a abertura centrada, junto do título: é o
+   convite em pessoa. Figtree bold, não Fraunces: em serifada nesse tamanho ele
+   competiria com o <h2> logo acima, e são duas frases da mesma ideia, não duas
+   hierarquias. Mesmo raciocínio da .destaque-frase do fechamento. */
+.ideias-chamada{
+  margin:18px auto 0; text-align:center; max-width:24ch;
+  font-weight:800; color:var(--escura);
+  font-size:clamp(19px,4.2vw,23px); line-height:1.4;
+}
+
+/* --- O formulário --- */
+/* O formulário é um PAINEL erguido, não campos soltos no fundo: é a única
+   coisa da página que pede ação de digitar, e tem que ler como mesa posta.
+   Branco sobre o creme do campo, borda fina e sombra funda. */
+.form-ideia{
+  margin-top:26px; display:grid; gap:14px;
+  background:var(--papel);
+  border:1px solid var(--linha);
+  border-radius:var(--r-g);
+  padding:clamp(20px,3vw,28px);
+  box-shadow:var(--sombra-f);
+}
+/* `display:grid` do autor ganha do [hidden] da folha do navegador, entao a
+   regra tem que ser escrita. Vale pro caso de nao existir canal de envio. */
+.form-ideia[hidden]{ display:none; }
+.form-linha{ display:grid; grid-template-columns:1fr; gap:14px; }
+@media (min-width:520px){ .form-linha{ grid-template-columns:1fr 1fr; } }
+.campo{ display:grid; gap:7px; }
+.campo label{
+  font-size:12px; font-weight:800; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--tinta-3);
+}
+/* Dentro de um painel branco, campo branco vira campo invisível: sobra a
+   borda solta. Por isso eles são creme aqui, e ficam brancos no foco. */
+.campo input, .campo textarea{
+  font-family:inherit; font-size:15.5px; color:var(--tinta);
+  background:var(--creme); border:1.5px solid var(--linha); border-radius:var(--r-m);
+  padding:13px 15px; width:100%;
+  transition:border-color .18s ease, box-shadow .18s ease;
+}
+.campo textarea{ resize:vertical; min-height:118px; line-height:1.55; }
+.campo input:focus, .campo textarea:focus{
+  outline:none; background:var(--papel); border-color:var(--principal);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--principal) 18%, transparent);
+}
+.campo input::placeholder, .campo textarea::placeholder{ color:var(--tinta-3); }
+.campo .conta{ font-size:12px; color:var(--tinta-3); justify-self:end; }
+.form-ideia .btn{ justify-self:start; }
+.form-nota{ font-size:12.5px; color:var(--tinta-3); line-height:1.6; margin:0; max-width:44ch; }
+
+/* O aviso de "deu certo" / "deu errado" ocupa o lugar do botão, sem empurrar
+   nada: a altura é a mesma nos dois estados. */
+.form-aviso{
+  margin:0; font-size:14px; font-weight:600; line-height:1.55;
+  padding:12px 15px; border-radius:var(--r-m); display:none;
+}
+.form-aviso.ok{  display:block; background:color-mix(in srgb, var(--principal) 12%, #fff); color:var(--escura); }
+.form-aviso.erro{ display:block; background:color-mix(in srgb, #C62828 10%, #fff); color:#9B2020; }
+
+/* --- O mural --- */
+.mural-cabeca{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:16px; }
+.mural-cabeca h3{
+  margin:0; font-family:'Fraunces',serif; font-weight:700;
+  font-size:clamp(19px,3.4vw,23px); color:var(--tinta);
+}
+.mural-conta{ font-size:13px; font-weight:700; color:var(--tinta-3); white-space:nowrap; }
+
+.mural{ display:grid; gap:13px; }
+@media (min-width:600px) and (max-width:939px){ .mural{ grid-template-columns:1fr 1fr; } }
+
+/* O card do mural é VERDE CLARO sobre fundo branco, e isso é o inverso exato
+   do cartão de proposta, que é branco sobre o campo verde. É de propósito: os
+   dois falam do mandato, mas um é a promessa dela e o outro é a fala de quem
+   vota. A inversão liga os dois sem confundir.
+
+   Branco puro aqui não servia: a seção dissolve pro branco no meio, então na
+   metade de baixo o card sumia e sobrava só a borda. */
+.ideia-card{
+  position:relative;
+  background:linear-gradient(150deg,
+    #fff 0%,
+    color-mix(in srgb, var(--principal) 13%, #fff) 100%);
+  border:1px solid color-mix(in srgb, var(--principal) 30%, #fff);
+  border-radius:var(--r-g);
+  padding:20px 20px 16px;
+  box-shadow:var(--sombra);
+  transition:box-shadow .3s ease, border-color .3s ease;
+}
+/* A barrinha vertical na quina esquerda é o que dá "fala de alguém" ao card,
+   no lugar de aspas desenhadas: em card curto uma aspa ocuparia meia linha. */
+.ideia-card::before{
+  content:''; position:absolute; left:0; top:18px; bottom:18px; width:4px;
+  border-radius:0 4px 4px 0;
+  background:linear-gradient(180deg, var(--principal), var(--destaque));
+}
+/* ⚠️ O :hover NÃO mexe no transform. O card balança numa animação, e animação
+   ganha de regra normal: um translateY aqui seria simplesmente ignorado
+   enquanto o balanço roda. Mesma armadilha do .btn-pulsa. O realce é sombra e
+   borda, que a animação não toca. */
+.ideia-card:hover{
+  box-shadow:var(--sombra-f);
+  border-color:color-mix(in srgb, var(--principal) 55%, #fff);
+}
+
+/* O balanço. Bem de leve: 5px de sobe e desce e um terço de grau de giro,
+   num ciclo longo. Passando disso vira card flutuando, não papel no vento.
+
+   Cada card ganha tempo e atraso próprios (--t e --d, escritos pelo JS) pra
+   não balançarem em bloco, o que pareceria carrossel.
+
+   ⚠️ A classe só entra quando o card está NA TELA, e sai quando ele passa.
+   Transform animado vira camada de composição, e o mural pode ter dezenas de
+   cards: sem isso seriam dezenas de camadas presas na memória da placa de
+   vídeo o tempo todo. É a mesma razão de não existir will-change em
+   [data-anim] nesta página. */
+@keyframes balanca{
+  0%,100%{ transform:translate3d(0,0,0) rotate(0deg); }
+  50%    { transform:translate3d(0,-5px,0) rotate(-.32deg); }
+}
+.ideia-card.balanca{
+  animation:balanca var(--t,7s) ease-in-out infinite;
+  animation-delay:var(--d,0s);
+}
+/* As aspas são de CSS, não do dado: assim toda ideia entra aspeada sem que
+   ninguém precise digitar aspas no formulário, e sem risco de aspa dupla
+   quando a pessoa digitar as dela. */
+.ideia-texto{ margin:0; font-size:15.5px; line-height:1.62; color:var(--tinta); }
+.ideia-texto::before{ content:'\201C'; }
+.ideia-texto::after{  content:'\201D'; }
+.ideia-pe{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; }
+/* --tinta-2, nao --tinta-3: em 12.5px sobre o card tingido o cinza claro
+   dava ~3:1, abaixo do minimo pra texto pequeno. */
+.ideia-quem{ font-size:12.5px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--tinta-2); }
+.ideia-quem b{ color:var(--escura); font-weight:800; }
+
+/* A curtida fica no cantinho do card, como a campanha pediu. Ela é um botão
+   de verdade (não um <div> clicável) pra funcionar no teclado e no leitor de
+   tela; o `aria-pressed` é o que diz se já foi curtida. */
+.curtir{
+  appearance:none; cursor:pointer; font-family:inherit;
+  display:inline-flex; align-items:center; gap:7px;
+  padding:7px 13px; border-radius:999px;
+  border:1.5px solid var(--linha); background:var(--papel);
+  color:var(--tinta-2); font-size:13px; font-weight:800;
+  transition:transform .16s ease, border-color .16s ease, color .16s ease, background-color .16s ease;
+}
+.curtir svg{ width:15px; height:15px; }
+.curtir:hover{ border-color:var(--principal); color:var(--escura); }
+.curtir[aria-pressed="true"]{
+  border-color:var(--principal); color:var(--escura);
+  background:color-mix(in srgb, var(--principal) 10%, #fff);
+}
+.curtir[aria-pressed="true"] svg{ fill:currentColor; }
+.curtir[disabled]{ cursor:default; opacity:.75; }
+/* O pulinho da curtida. Fica no SVG, não no botão: no botão ele brigaria com
+   o translateY do :hover, e animação sempre ganha de regra normal. */
+.curtir.pulou svg{ animation:pulo .42s cubic-bezier(.34,1.56,.64,1); }
+@keyframes pulo{ 0%{ transform:scale(1); } 42%{ transform:scale(1.35); } 100%{ transform:scale(1); } }
+
+.mural-vazio{
+  background:color-mix(in srgb, var(--principal) 5%, #fff);
+  border:1.5px dashed color-mix(in srgb, var(--principal) 30%, #fff);
+  border-radius:var(--r-g);
+  padding:30px 24px; text-align:center; color:var(--tinta-3);
+  font-size:14.5px; line-height:1.6;
+}
+.mural-vazio b{ display:block; color:var(--tinta-2); font-size:15.5px; margin-bottom:6px; }
+
+@media (prefers-reduced-motion:reduce){
+  .curtir.pulou svg{ animation:none; }
+  /* Zerar o duration transformaria o laço infinito em repintura sem fim. */
+  .ideia-card.balanca{ animation:none; }
+}
+
 /* --- Fechamento --------------------------------------------------------- */
 .fecho{
   position:relative; z-index:3; overflow:hidden;
@@ -1125,6 +1412,8 @@ footer .legenda b{ color:var(--tinta-2); font-weight:700; }
   .luz{ animation:none; opacity:.7; }
   [data-anim]{ opacity:1 !important; transform:none !important; }
   .urna span{ opacity:1 !important; transform:none !important; }
+  /* Zerar o duration transformaria o laço num repinte sem fim. */
+  .bloco-titulo h2.varre::after, .fecho-texto h2.varre::after{ animation:none; }
   /* As contínuas ficam PARADAS de verdade: só zerar o duration transformaria
      um laço infinito em repintura sem fim. */
   .sol-canto,
@@ -1150,6 +1439,7 @@ footer .legenda b{ color:var(--tinta-2); font-weight:700; }
       <a href="#quem">A Sol</a>
       <a href="#marcos">Trajetória</a>
       <a href="#propostas">Propostas</a>
+      <a href="#ideias" id="linkIdeias" hidden>Sua voz</a>
       <a href="#fecho">1012</a>
       <a href="#" id="linkGerador" hidden>Faça sua foto</a>
       <a class="btn btn-principal" id="linkZapTopo" href="#" target="_blank" rel="noopener" hidden>
@@ -1300,6 +1590,83 @@ footer .legenda b{ color:var(--tinta-2); font-weight:700; }
     <!-- Sem .faixa aqui: cada eixo é uma faixa de largura inteira e traz a
          sua própria .faixa por dentro. -->
     <div id="eixos"></div>
+  </section>
+
+  <!-- ================= MURAL DE IDEIAS =================
+       A seção inteira nasce `hidden` e o JS só a mostra quando existe pra
+       onde mandar a sugestão (banco, WhatsApp ou e-mail) ou quando já há
+       ideia aprovada pra mostrar. É a mesma regra dos botões do resto do
+       site: nada de convidar a escrever num campo que não leva a lugar
+       nenhum. -->
+  <section class="ideias" id="ideias" hidden>
+    <div class="faixa">
+      <!-- Abertura centrada, de ponta a ponta: o convite é da seção inteira,
+           não da coluna do formulário. Mesmo gesto do "Quem é a Sol". A copy é
+           a da campanha, palavra por palavra; "E eu quero ouvir você!" é uma
+           batida própria, não o começo do parágrafo seguinte. -->
+      <div class="bloco-titulo centro" data-anim="baixo">
+        <p class="chapeu">Sua voz</p>
+        <h2>Política se faz <em>em conjunto.</em></h2>
+        <span class="linha-fina"></span>
+      </div>
+      <p class="ideias-chamada" data-anim="baixo" style="--atraso:70ms">
+        E eu quero ouvir você!
+      </p>
+
+      <div class="ideias-grid">
+
+        <div class="ideias-convite">
+          <p data-anim="baixo" style="--atraso:120ms">
+            Esse espaço é seu. Quero saber o que precisa mudar, o que pode
+            melhorar e o que você espera para o nosso Tocantins.
+          </p>
+          <p data-anim="baixo" style="--atraso:170ms">
+            Compartilhe uma ideia, uma proposta ou um problema da sua cidade.
+            Sua voz também pode ajudar a construir esse mandato.
+          </p>
+
+          <form class="form-ideia" id="formIdeia" data-anim="baixo" style="--atraso:230ms" novalidate>
+            <div class="form-linha">
+              <div class="campo">
+                <label for="ideiaNome">Seu nome</label>
+                <input id="ideiaNome" name="nome" type="text" maxlength="40"
+                       autocomplete="given-name" placeholder="Primeiro nome">
+              </div>
+              <div class="campo">
+                <label for="ideiaCidade">Sua cidade</label>
+                <input id="ideiaCidade" name="cidade" type="text" maxlength="40"
+                       autocomplete="address-level2" placeholder="Palmas, Araguaína…">
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="ideiaTexto">Sua ideia</label>
+              <textarea id="ideiaTexto" name="texto" maxlength="400" required
+                        placeholder="O que precisa mudar na sua cidade? Que proposta você queria ver neste mandato?"></textarea>
+              <span class="conta" id="ideiaConta">0/400</span>
+            </div>
+
+            <p class="form-aviso" id="ideiaAviso" role="status" aria-live="polite"></p>
+
+            <button type="submit" class="btn btn-principal btn-pulsa" id="ideiaEnviar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2.5 11 13"/><path d="M21.5 2.5 15 21l-4-8-8-4z"/></svg>
+              Enviar minha sugestão
+            </button>
+
+            <p class="form-nota" id="ideiaNota"></p>
+          </form>
+        </div>
+
+        <div class="ideias-mural" data-anim="baixo" style="--atraso:120ms">
+          <div class="mural-cabeca">
+            <h3>O que o Tocantins está pedindo</h3>
+            <span class="mural-conta" id="muralConta"></span>
+          </div>
+          <div class="mural" id="mural"></div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <!-- ================= FECHAMENTO ================= -->
@@ -1614,6 +1981,264 @@ $('#marcosGrade').innerHTML = MARCOS.map((m,i) => `
 })();
 
 /* ==========================================================================
+   3b. MURAL DE IDEIAS
+
+   O site é um HTML estático. Um mural de verdade (o card de um visitante
+   aparecendo pro outro, a curtida somando entre todo mundo) precisa de estado
+   compartilhado, então existem DOIS modos, escolhidos por CAMPANHA.mural:
+
+   'banco'  — url + chave preenchidos. O card entra numa tabela, a campanha
+              aprova, e só então ele aparece. A curtida vai pra uma função no
+              banco e vale entre visitantes. Ver `mural.sql`.
+   'zap'    — sem banco. A ideia sai pelo WhatsApp (ou e-mail) direto pra
+              campanha, e o mural mostra só o que já foi aprovado em IDEIAS.
+              A curtida vale só no navegador de quem clicou.
+
+   ⚠️ APROVAÇÃO NÃO É OPCIONAL. Card de mural é texto de terceiro publicado no
+   site da candidata, e a campanha responde pelo que está lá. Nada aparece sem
+   passar por alguém: no modo 'banco' isso é a coluna `aprovada`, que nasce
+   `false` e que a política de acesso impede o visitante de mudar.
+   ========================================================================== */
+(function(){
+  const secao = $('#ideias');
+  if(!secao) return;
+
+  const M     = CAMPANHA.mural || {};
+  const L     = CAMPANHA.links;
+  const temBanco = !!(M.url && M.chave);
+
+  /* Pra onde a sugestão vai quando não há banco. Mesma escada do resto do
+     site: WhatsApp, senão e-mail, senão não existe destino. */
+  const zap = L.whatsapp
+    ? n => `https://wa.me/${L.whatsapp}?text=${encodeURIComponent(n)}`
+    : null;
+  const temCanal = temBanco || !!zap || !!L.email;
+
+  /* A curtida guarda no navegador o que já foi curtido: sem isso a mesma
+     pessoa clicaria mil vezes e o número não diria nada. Não é segurança
+     (ninguém impede um F12), é higiene: tira o clique repetido sem querer. */
+  const CHAVE = 'sol1012:curtidas';
+  const lidas = () => {
+    try{ return JSON.parse(localStorage.getItem(CHAVE) || '{}'); }
+    catch(e){ return {}; }
+  };
+  const marca = id => {
+    try{ const m = lidas(); m[id] = 1; localStorage.setItem(CHAVE, JSON.stringify(m)); }
+    catch(e){ /* navegador anônimo ou storage bloqueado: a curtida só não gruda */ }
+  };
+
+  /* ---- acesso ao banco (REST do Supabase, sem biblioteca nenhuma) ---- */
+  const cab = () => ({ apikey:M.chave, Authorization:`Bearer ${M.chave}`,
+                       'Content-Type':'application/json' });
+
+  async function buscarAprovadas(){
+    if(!temBanco) return [];
+    const url = `${M.url}/rest/v1/ideias`
+              + `?aprovada=eq.true&select=id,nome,cidade,texto,curtidas`
+              + `&order=curtidas.desc,criada_em.desc&limit=60`;
+    const r = await fetch(url, { headers:cab() });
+    if(!r.ok) throw new Error('leitura');
+    return await r.json();
+  }
+
+  async function gravar(dados){
+    const r = await fetch(`${M.url}/rest/v1/ideias`, {
+      method:'POST', headers:{ ...cab(), Prefer:'return=minimal' },
+      body:JSON.stringify(dados)
+    });
+    if(!r.ok) throw new Error('gravacao');
+  }
+
+  async function somarCurtida(id){
+    const r = await fetch(`${M.url}/rest/v1/rpc/curtir_ideia`, {
+      method:'POST', headers:cab(), body:JSON.stringify({ p_id:id })
+    });
+    if(!r.ok) throw new Error('curtida');
+    return await r.json();
+  }
+
+  /* ---- desenho ---- */
+  /* Tempo e atraso próprios por card: em bloco, o balanço vira carrossel.
+     Os números são primos entre si de propósito, pra demorarem a coincidir. */
+  const ritmo = k => `--t:${(6.4 + (k % 4) * 0.7).toFixed(1)}s; --d:${(k % 5) * 0.55}s`;
+
+  const cartao = (i, k) => {
+    const assina = i.nome
+      ? `<b>${escapa(i.nome)}</b>${i.cidade ? ' · ' + escapa(i.cidade) : ''}`
+      : (i.cidade ? escapa(i.cidade) : 'Anônimo');
+    const curtida = !!lidas()[i.id];
+    return `<article class="ideia-card" style="${ritmo(k)}">
+        <p class="ideia-texto">${escapa(i.texto)}</p>
+        <div class="ideia-pe">
+          <span class="ideia-quem">${assina}</span>
+          <button class="curtir" type="button" data-id="${escapa(i.id)}"
+                  aria-pressed="${curtida}"
+                  aria-label="Curtir esta ideia">
+            ${svg('coracao')}<span class="n">${Number(i.curtidas) || 0}</span>
+          </button>
+        </div>
+      </article>`;
+  };
+
+  const caixa  = $('#mural');
+  const conta  = $('#muralConta');
+  let   lista  = [];
+
+  /* Só balança o que está na tela. Ver o aviso no CSS: transform animado vira
+     camada de composição, e deixar dezenas delas vivas o tempo todo é o
+     mesmo desperdício que fez o will-change sair de [data-anim]. */
+  const parado = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const olhoBalanco = (!parado && 'IntersectionObserver' in window)
+    ? new IntersectionObserver(ent => {
+        ent.forEach(e => e.target.classList.toggle('balanca', e.isIntersecting));
+      }, { rootMargin:'80px 0px' })
+    : null;
+
+  function pinta(){
+    if(!lista.length){
+      caixa.innerHTML = `<div class="mural-vazio">
+          <b>O mural ainda está vazio.</b>
+          Seja a primeira pessoa a mandar uma ideia: as sugestões passam pela
+          campanha e depois aparecem aqui.
+        </div>`;
+      conta.textContent = '';
+      return;
+    }
+    caixa.innerHTML = lista.map(cartao).join('');
+    conta.textContent = lista.length === 1 ? '1 ideia' : `${lista.length} ideias`;
+    /* A lista é repintada inteira a cada carga, então os alvos antigos deixam
+       de existir: o observador tem que ser religado nos cards novos. */
+    if(olhoBalanco){
+      olhoBalanco.disconnect();
+      $$('.ideia-card').forEach(c => olhoBalanco.observe(c));
+    }
+  }
+
+  /* Um ouvinte só no container, não um por card: a lista é repintada a cada
+     carga e ouvinte por card vazaria a cada repintura. */
+  caixa.addEventListener('click', async ev => {
+    const b = ev.target.closest('.curtir');
+    if(!b || b.getAttribute('aria-pressed') === 'true') return;
+
+    const id  = b.dataset.id;
+    const num = b.querySelector('.n');
+    const de  = Number(num.textContent) || 0;
+
+    /* Sobe na hora e só depois confirma: a curtida tem que responder ao dedo.
+       Se o banco recusar, volta pro número de antes. */
+    b.setAttribute('aria-pressed','true');
+    b.classList.add('pulou');
+    num.textContent = de + 1;
+    marca(id);
+    const item = lista.find(x => String(x.id) === String(id));
+    if(item) item.curtidas = de + 1;
+
+    if(temBanco){
+      try{
+        const novo = await somarCurtida(id);
+        if(typeof novo === 'number'){ num.textContent = novo; if(item) item.curtidas = novo; }
+      }catch(e){
+        num.textContent = de;
+        b.setAttribute('aria-pressed','false');
+        if(item) item.curtidas = de;
+      }
+    }
+  });
+
+  /* ---- o formulário ---- */
+  const form   = $('#formIdeia');
+  const aviso  = $('#ideiaAviso');
+  const nota   = $('#ideiaNota');
+  const texto  = $('#ideiaTexto');
+  const contaT = $('#ideiaConta');
+  const botao  = $('#ideiaEnviar');
+
+  texto.addEventListener('input', () => {
+    contaT.textContent = `${texto.value.length}/400`;
+  });
+
+  const diz = (msg, tipo) => {
+    aviso.textContent = msg;
+    aviso.className = `form-aviso ${tipo}`;
+  };
+
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    const dados = {
+      nome:   $('#ideiaNome').value.trim().slice(0,40),
+      cidade: $('#ideiaCidade').value.trim().slice(0,40),
+      texto:  texto.value.trim().slice(0,400)
+    };
+    if(dados.texto.length < 12){
+      diz('Escreva um pouquinho mais sobre a sua ideia pra gente entender bem.', 'erro');
+      texto.focus();
+      return;
+    }
+
+    if(temBanco){
+      botao.disabled = true;
+      diz('Enviando…', 'ok');
+      try{
+        await gravar(dados);
+        form.reset();
+        contaT.textContent = '0/400';
+        diz('Recebido! Sua ideia foi para a equipe. Assim que passar pela '
+          + 'campanha ela aparece aqui no mural.', 'ok');
+      }catch(e){
+        diz('Não deu pra enviar agora. Tente de novo em instantes, ou fale com '
+          + 'a campanha pelo WhatsApp.', 'erro');
+      }finally{
+        botao.disabled = false;
+      }
+      return;
+    }
+
+    /* Sem banco: a ideia sai por uma conversa de verdade em vez de sumir. */
+    const corpo = [
+      CAMPANHA.muralTexto,
+      '',
+      dados.texto,
+      '',
+      dados.nome   ? `Nome: ${dados.nome}`     : '',
+      dados.cidade ? `Cidade: ${dados.cidade}` : ''
+    ].filter(Boolean).join('\n');
+
+    if(zap){
+      window.open(zap(corpo), '_blank', 'noopener');
+    }else if(L.email){
+      window.location.href = `mailto:${L.email}`
+        + `?subject=${encodeURIComponent('Sugestão para o mandato')}`
+        + `&body=${encodeURIComponent(corpo)}`;
+    }
+    diz('Abrimos a conversa com a campanha com a sua ideia já escrita. '
+      + 'É só mandar!', 'ok');
+  });
+
+  /* ---- entrada ---- */
+  nota.textContent = temBanco
+    ? 'Sua ideia passa pela equipe antes de aparecer no mural. Não publicamos '
+    + 'telefone, e-mail nem endereço.'
+    : 'Sua ideia vai direto para a equipe da campanha.';
+
+  lista = IDEIAS.map((x,i) => ({ id:`fixa-${i}`, ...x }));
+
+  /* A seção só existe se houver pra onde mandar ou algo pra mostrar. */
+  if(!temCanal && !lista.length) return;
+  secao.hidden = false;
+  const noMenu = $('#linkIdeias'); if(noMenu) noMenu.hidden = false;
+  if(!temCanal) form.hidden = true;
+  pinta();
+
+  if(temBanco){
+    buscarAprovadas()
+      .then(vindas => {
+        if(vindas.length){ lista = vindas; pinta(); }
+      })
+      .catch(() => { /* mural fora do ar não pode derrubar a página */ });
+  }
+})();
+
+/* ==========================================================================
    4. MOVIMENTO
    a) entrada e saída dos blocos;  b) menu do celular;  c) barra de leitura;
    d) qual seção está sendo lida;  e) contadores.
@@ -1683,6 +2308,23 @@ $('#marcosGrade').innerHTML = MARCOS.map((m,i) => `
   addEventListener('resize', passo);
   passo();
 
+  /* --- c2) o brilho dos títulos ------------------------------------------
+     Só varre o título que está NA TELA. É um laço infinito repintando texto:
+     deixar os cinco rodando a página toda é repintura de graça enquanto a
+     pessoa lê outra seção. Mesma razão do balanço dos cards do mural. */
+  (function(){
+    const titulos = $$('.bloco-titulo h2, .fecho-texto h2');
+    if(!titulos.length) return;
+    if(parado || !('IntersectionObserver' in window)) return;
+    /* Atraso escalonado: dois títulos visíveis ao mesmo tempo (acontece em
+       tela grande) varrendo em uníssono pareceriam uma coisa só piscando. */
+    titulos.forEach((t,i) => t.style.setProperty('--brilho-atraso', `${i * 0.4}s`));
+    const olho = new IntersectionObserver(ent => {
+      ent.forEach(e => e.target.classList.toggle('varre', e.isIntersecting));
+    }, { rootMargin:'0px 0px -20%' });
+    titulos.forEach(t => olho.observe(t));
+  })();
+
   /* --- d) qual seção está sendo lida ------------------------------------ */
   if('IntersectionObserver' in window){
     const marca = (sel, id) => {
@@ -1690,7 +2332,7 @@ $('#marcosGrade').innerHTML = MARCOS.map((m,i) => `
         a.getAttribute('href') === '#' + id));
     };
     /* seções do menu de cima */
-    const secoes = ['quem','marcos','propostas','fecho']
+    const secoes = ['quem','marcos','propostas','ideias','fecho']
       .map(id => document.getElementById(id)).filter(Boolean);
     const olhoTopo = new IntersectionObserver(ent => {
       const visivel = ent.filter(e => e.isIntersecting)
